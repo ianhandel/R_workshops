@@ -1,0 +1,21 @@
+---
+title: Exploratory analysis XXXX data
+---
+
+
+
+Here it starts....
+
+```{r}
+library(tidyverse)
+library(gapminder)
+gapminder
+```
+
+## Exploratory plot
+
+```{r}
+ggplot(gapminder, aes(year, pop)) +
+  geom_point(aes())
+```
+
