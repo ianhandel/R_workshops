@@ -1,0 +1,27 @@
+---
+title: "R_Workshop"
+author: "Your name here"
+date: "2018-04-04"
+output: html_document
+---
+
+### Creating R 'objects' and storing numbers in them.
+
+```{r}
+x <- 999
+x
+
+x <- 111
+x
+
+y  <- x
+y
+
+z <- 1:10
+z
+
+sum(z)
+
+mean(z)
+```
+
