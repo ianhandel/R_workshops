@@ -53,8 +53,8 @@ sum(roots)
 
 ```{r}
 # put the sum of the square roots of nums into sumroots and show it
-sumroots <- nums %>% sqrt() %>% sum()
-sumroots
+sum_roots <- nums %>% sqrt() %>% sum()
+sum_roots
 ```
 
 
