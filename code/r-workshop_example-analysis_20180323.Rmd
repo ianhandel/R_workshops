@@ -1,0 +1,16 @@
+---
+title: "Alien Data - Example Analysis"
+author: "Your name here"
+date: "2018-04-04"
+output: html_document
+---
+
+### Loading 'add-in' packages
+
+```{r}
+library(tidyverse) # to tidy, manipulate and explore data
+library(readxl) # to import data from Excel
+library(here) # to make referring to files and folders consistent
+```
+
+

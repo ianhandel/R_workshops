@@ -5,14 +5,6 @@ date: "2018-04-04"
 output: html_document
 ---
 
-### Loading 'add-in' packages
-
-```{r}
-library(tidyverse) # to tidy, manipulate and explore data
-library(readxl) # to import data from Excel
-library(here) # to make referring to files and folders consistent
-```
-
 ### Creating R 'objects' and storing numbers in them.
 
 ```{r}
@@ -29,7 +21,7 @@ age  <- x
 age
 
 # put integers 1 to 10 into 'nums' and show what's in 'nums'
-nums <- 1:10
+nums <- 2:10
 nums
 
 # show the square root of each number in 'nums'
@@ -40,22 +32,55 @@ sum(nums)
 
 # show the arithemtic mean of what's in 'nums'
 mean(nums)
+```
 
-# put the square root of 'nums' into 'roots' and show it
-roots <- sqrt(nums)
-roots
+### Try some other functions
+```{r}
+length(nums)
+rev(nums)
+sample(nums)
+sample(nums)
+min(nums)
+max(nums)
+median(nums)
+```
 
-# find the sum of roots and show it
-sum(roots)
+### Rivers data
+```{r}
+rivers
+
+mean(rivers)
+min(rivers)
+max(rivers)
+length(rivers)
+
+```
+
+
+
+
+### Loading 'add-in' packages
+
+```{r}
+library(tidyverse) # to tidy, manipulate and explore data
 ```
 
 ### Introducing the 'pipe'
 
 ```{r}
-# put the sum of the square roots of nums into sumroots and show it
+# put the square root of 'nums' into 'roots'
+# then put the sum of that into sum_roots
+roots <- sqrt(nums)
+sum_roots <- sum(roots)
+sum_roots
+```
+
+```{r}
+# as above using the 'pipe'
 sum_roots <- nums %>% sqrt() %>% sum()
 sum_roots
 ```
+
 
 
 
