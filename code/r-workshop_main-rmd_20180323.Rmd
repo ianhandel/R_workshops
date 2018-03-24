@@ -5,23 +5,61 @@ date: "2018-04-04"
 output: html_document
 ---
 
+### Loading 'add-in' packages
+
+```{r}
+library(tidyverse) # to tidy, manipulate and explore data
+library(readxl) # to import data from Excel
+library(here) # to make referring to files and folders consistent
+```
+
 ### Creating R 'objects' and storing numbers in them.
 
 ```{r}
-x <- 999
+# put 99 into an object called 'x' then show what's in 'x'
+x <- 99
 x
 
-x <- 111
-x
+# put 53 into an object called 'age' then show what's in 'age'
+age <- 53
+age
 
-y  <- x
-y
+# put what's in 'x' into 'age' and show what's in 'age
+age  <- x
+age
 
-z <- 1:10
-z
+# put integers 1 to 10 into 'nums' and show what's in 'nums'
+nums <- 1:10
+nums
 
-sum(z)
+# show the square root of each number in 'nums'
+sqrt(nums)
 
-mean(z)
+# show the total of the numbers in 'nums'
+sum(nums)
+
+# show the arithemtic mean of what's in 'nums'
+mean(nums)
+
+# put the square root of 'nums' into 'roots' and show it
+roots <- sqrt(nums)
+roots
+
+# find the sum of roots and show it
+sum(roots)
 ```
+
+### Introducing the 'pipe'
+
+```{r}
+# put the sum of the square roots of nums into sumroots and show it
+sumroots <- nums %>% sqrt() %>% sum()
+sumroots
+```
+
+
+
+
+
+
 
