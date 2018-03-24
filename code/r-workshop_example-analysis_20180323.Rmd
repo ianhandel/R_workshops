@@ -13,4 +13,11 @@ library(readxl) # to import data from Excel
 library(here) # to make referring to files and folders consistent
 ```
 
+### Import data
+
+```{r}
+alien <- here("data", "data_alien-experiment-untidy_20180310.xlsx") %>% 
+  read_excel()
+```
+
 
