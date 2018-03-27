@@ -4,13 +4,14 @@ author: "Your name here"
 date: "2018-04-04"
 output:
   html_document:
-    code_folding: hide
+    code_folding: show
+    highlight: tango
     toc: yes
     toc_float:
       toc_collapsed: yes
 ---
 
-### (Install) and load 'add-in' packages
+(Install) and load 'add-in' packages
 
 ```{r, message=FALSE, warning=FALSE}
 # install these packages if they are not already there...
@@ -28,7 +29,138 @@ library(skimr) # nice quick summaries of data sets
 
 ```{r}
 alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx") 
-alien <- read_excel(alien_file, sheet = 1)
+alien <- read_excel(alien_file, sheet = 1, na = "*")
+skim(alien)
 ```
+
+### Tidy and clean data
+
+Make subject a 'text' id rather than a number, padding with zeros.
+
+```{r}
+alien <- alien %>% 
+  mutate(subject = str_pad(subject, width = 3, side = "left", "0"),
+         subject = str_c("A", subject))
+```
+
+Rename columns that don't follow 'rules'
+
+```{r}
+alien <- alien %>% 
+  rename(colour = `alien colour`,
+         sex = `sex (male/female)`,
+         IQ = `IQ - ref to human 100 scale!`)
+```
+
+Have a look at the colours...
+
+```{r}
+alien %>%
+  count(colour)
+```
+
+
+Colour column has mixed capitalisation - make all lower case
+
+```{r}
+alien <- alien %>% 
+  mutate(colour = str_to_lower(colour))
+```
+
+Have a look at the sexes...
+
+```{r}
+alien %>%
+  count(sex)
+```
+
+Make sexes all 'm' or 'f' using first letter
+
+```{r}
+alien <- alien %>% 
+  mutate(sex = str_sub(sex, 1, 1),
+         sex = str_to_lower(sex))
+```
+
+Convert months to years
+
+```{r}
+alien <- alien %>% 
+  mutate(age = if_else(str_detect(age, "months"),
+                       parse_number(age) / 12,
+                       parse_number(age)))
+```
+
+See how data looks so far...
+
+```{r}
+skim(alien)
+```
+
+Make iron column into a number (double in R speak)
+
+```{r}
+alien <- alien %>% 
+  mutate(iron = parse_number(iron))
+```
+
+Right that looks to be the data 'tidy and clean'. Now some exploratory analysis.
+
+### Explore categorical data
+
+Tabulate colour...
+```{r}
+alien %>%
+  count(colour)
+```
+
+Tabulate colour vs sex...
+```{r}
+alien %>%
+  count(colour, sex)
+```
+
+### Explore numerical data
+
+Mean glucose level
+```{r}
+alien %>%
+  summarise(mean(glucose))
+```
+
+Mean and sd glucose
+```{r}
+alien %>% 
+  summarise(mean(glucose),
+            sd(glucose),
+            min(glucose),
+            max(glucose))
+```
+
+How about seeing if there's a sex difference?
+```{r}
+alien %>%
+  group_by(sex) %>% 
+  summarise(mean(glucose),
+            sd(glucose),
+            min(glucose),
+            max(glucose))
+```
+
+
+### Some graphics
+
+Plot to show frequency of different colours...
+```{r}
+ggplot(alien) +
+  aes(x = colour, fill = colour) +
+  geom_bar() +
+  scale_fill_identity() +
+  labs(title = "The alien colours",
+       x = "Colour",
+       y = "Count")
+```
+
+
 
 
