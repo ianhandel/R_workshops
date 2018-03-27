@@ -4,7 +4,7 @@ library(tidyverse)
 library(writexl)
 library(here)
 
-n <- 100
+n <- 500
 N <- 1000
 n_years <- 100
 colours <- c("red", "blue", "orange", "purple")
@@ -37,9 +37,7 @@ dat <- tibble(
 
 # give them ages and delete some, tending to be older ones
 dat <- dat %>%
-  crossing(tibble(age = 1:n_years)) %>%
-  filter(sqrt(age) < log(runif(n(), 1, n_years * 5))) %>% 
-  distinct()
+  mutate(age = round(rgamma(n, 2, 0.1), 2))
 
 # add healths, older aliens less healthy
 dat <- dat %>%
@@ -79,6 +77,7 @@ dat <- dat %>%
 # add weight data
 dat <- dat %>% 
   mutate(weight = assym -  50 * exp(- age / growth_rate) +
+           str_detect(sex, "^m|^M") * 15 +
            rnorm(n(), 5, 2))
 
 # put blanks after first subject info
