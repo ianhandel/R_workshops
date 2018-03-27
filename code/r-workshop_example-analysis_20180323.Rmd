@@ -229,10 +229,12 @@ ggplot(alien) +
 
 ```{r}
 ggplot(alien) +
-  aes(x = colour, y = iron, colour = colour) +
-  geom_boxplot() +
-  scale_colour_identity() +
-  labs(title = "Alien glucose vs colour")
+  aes(x = colour, y = iron, fill = colour) +
+  geom_boxplot(alpha = 0.25) +
+  scale_fill_identity() +
+  labs(title = "Alien iron vs colour",
+       x = "Alien colour",
+       y = "Iron (ug/L)")
 ```
 
 

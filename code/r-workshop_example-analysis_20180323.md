@@ -1,6 +1,15 @@
-# Alien Data - Example Analysis
-Your name here  
-2018-04-04  
+---
+title: "Alien Data - Example Analysis"
+author: "Your name here"
+date: "2018-04-04"
+output:
+  html_document:
+    keep_md: true
+    code_folding: show
+    toc: yes
+    toc_float:
+      toc_collapsed: yes
+---
 
 (Install) and load 'add-in' packages
 
@@ -385,10 +394,12 @@ ggplot(alien) +
 
 ```r
 ggplot(alien) +
-  aes(x = colour, y = iron, colour = colour) +
-  geom_boxplot() +
-  scale_colour_identity() +
-  labs(title = "Alien glucose vs colour")
+  aes(x = colour, y = iron, fill = colour) +
+  geom_boxplot(alpha = 0.25) +
+  scale_fill_identity() +
+  labs(title = "Alien iron vs colour",
+       x = "Alien colour",
+       y = "Iron (ug/L)")
 ```
 
 ```
