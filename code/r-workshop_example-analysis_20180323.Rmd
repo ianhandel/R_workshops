@@ -160,6 +160,33 @@ ggplot(alien) +
        x = "Colour",
        y = "Count")
 ```
+Plot to show frequency of different spottinesses
+```{r}
+ggplot(alien) +
+  aes(x = health, fill = health) +
+  geom_bar() +
+  labs(title = "The alien health",
+       x = "Health",
+       y = "Count")
+```
+
+Single numerical variables. Look at gluoce levels...
+```{r}
+ggplot(alien) +
+  aes(x = glucose) +
+  geom_histogram() +
+  facet_wrap(~ sex, ncol = 1) +
+  labs(title = "Alien glucose level",
+       x = "Glucose (mg/L)")
+```
+
+Scatterplot - age vs glucose
+```{r}
+ggplot(alien) +
+  aes(x = age, y = glucose, colour = sex) +
+  geom_point() +
+  labs(title = "Alien glucose vs age")
+```
 
 
 
