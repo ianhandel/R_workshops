@@ -7,7 +7,7 @@ library(here)
 n <- 500
 N <- 1000
 n_years <- 100
-colours <- c("red", "blue", "orange", "purple")
+colours <- c("red", "green", "orange", "purple")
 colour_prob <- c(1, 4, 2, 6)
 sexes <- c("male", "female", "m", "F", "MALE", "Female")
 sex_probs <- c(10, 10, 1, 2, 1, 1)
@@ -58,7 +58,7 @@ dat <- dat %>%
 # add iron data
 dat <- dat %>%
   mutate(
-    iron = as.numeric(colour == colours[1]) +
+    iron = as.numeric(colour == colours[1]) * 3 +
       sqrt(age) +
       str_detect(sex, "^m|^M") * 2 +
       rnorm(n(), 20, 1),

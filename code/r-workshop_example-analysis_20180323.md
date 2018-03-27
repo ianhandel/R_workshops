@@ -36,21 +36,23 @@ skim(alien)
 ##                age       0      500 500   1   9     0       66
 ##       alien colour       0      500 500   3   6     0        8
 ##             health       0      500 500   6  15     0        4
-##               iron      24      476 500   2   4     0       94
+##               iron      24      476 500   2   4     0       97
 ##  sex (male/female)       0      500 500   1   6     0        6
 ## 
 ## Variable type: numeric 
 ##                      variable missing complete   n   mean     sd     p0
 ##                       glucose       0      500 500  15.53   2.99   8.35
-##  IQ - ref to human 100 scale!       0      500 500 516.93 108.48 331   
+##  IQ - ref to human 100 scale!       0      500 500 518.16 108.72 331   
 ##                       subject       0      500 500 250.5  144.48   1   
 ##                        weight       0      500 500 100.7   16.95  47.99
 ##     p25 median    p75    p100     hist
 ##   13.34   15.5  17.45   24.57 ▁▃▆▇▆▃▁▁
-##  444.75  500   572    1033    ▃▇▆▂▁▁▁▁
+##  445     500.5 574    1033    ▃▇▆▂▁▁▁▁
 ##  125.75  250.5 375.25  500    ▇▇▇▇▇▇▇▇
 ##   90.8   102.4 111.78  144.16 ▁▁▃▆▇▆▃▁
 ```
+
+Use `View (alien)` to eyeball the data too.
 
 ### Tidy and clean data
 
@@ -63,7 +65,7 @@ alien <- alien %>%
          subject = str_c("A", subject))
 ```
 
-Rename columns that don't follow 'rules'
+Rename columns that don't follow good naming 'rules'
 
 
 ```r
@@ -85,8 +87,8 @@ alien %>%
 ## # A tibble: 8 x 2
 ##   colour     n
 ##   <chr>  <int>
-## 1 blue     124
-## 2 Blue      37
+## 1 green    124
+## 2 Green     37
 ## 3 orange    60
 ## 4 Orange    12
 ## 5 purple   195
@@ -96,7 +98,7 @@ alien %>%
 ```
 
 
-Colour column has mixed capitalisation - make all lower case
+`colour` column has mixed capitalisation - make all lower case
 
 
 ```r
@@ -133,7 +135,7 @@ alien <- alien %>%
          sex = str_to_lower(sex))
 ```
 
-Convert months to years
+Convert 'months' to 'years'
 
 
 ```r
@@ -159,7 +161,7 @@ skim(alien)
 ##  variable missing complete   n min max empty n_unique
 ##    colour       0      500 500   3   6     0        4
 ##    health       0      500 500   6  15     0        4
-##      iron      24      476 500   2   4     0       94
+##      iron      24      476 500   2   4     0       97
 ##       sex       0      500 500   1   1     0        2
 ##   subject       0      500 500   4   4     0      500
 ## 
@@ -167,7 +169,7 @@ skim(alien)
 ##  variable missing complete   n   mean     sd     p0    p25 median    p75
 ##       age       0      500 500  19.79  13.19   0.17  11      17    26   
 ##   glucose       0      500 500  15.53   2.99   8.35  13.34   15.5  17.45
-##        IQ       0      500 500 516.93 108.48 331    444.75  500   572   
+##        IQ       0      500 500 518.16 108.72 331    445     500.5 574   
 ##    weight       0      500 500 100.7   16.95  47.99  90.8   102.4 111.78
 ##     p100     hist
 ##    85    ▅▇▅▂▁▁▁▁
@@ -176,7 +178,7 @@ skim(alien)
 ##   144.16 ▁▁▃▆▇▆▃▁
 ```
 
-Make iron column into a number (double in R speak)
+Make `iron` column into a number
 
 
 ```r
@@ -184,7 +186,7 @@ alien <- alien %>%
   mutate(iron = parse_number(iron))
 ```
 
-Right that looks to be the data 'tidy and clean'. Now some exploratory analysis.
+Data now looks to be 'tidy and clean'. Next some exploratory analysis...
 
 ### Explore categorical data
 
@@ -199,7 +201,7 @@ alien %>%
 ## # A tibble: 4 x 2
 ##   colour     n
 ##   <chr>  <int>
-## 1 blue     161
+## 1 green    161
 ## 2 orange    72
 ## 3 purple   239
 ## 4 red       28
@@ -216,8 +218,8 @@ alien %>%
 ## # A tibble: 8 x 3
 ##   colour sex       n
 ##   <chr>  <chr> <int>
-## 1 blue   f        84
-## 2 blue   m        77
+## 1 green  f        84
+## 2 green  m        77
 ## 3 orange f        39
 ## 4 orange m        33
 ## 5 purple f       111
@@ -298,7 +300,7 @@ Plot to show frequency of different colours...
 
 ```r
 ggplot(alien) +
-  aes(x = colour, fill = colour) +
+  aes(x = fct_reorder(colour, colour, length), fill = colour) +
   geom_bar() +
   scale_fill_identity() +
   labs(title = "The alien colours",
@@ -308,7 +310,7 @@ ggplot(alien) +
 
 ![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
-Single numerical variables. Look at gluoce levels...
+Single numerical variables. Look at glucose levels...
 
 ```r
 ggplot(alien) +
@@ -355,6 +357,22 @@ ggplot(alien) +
 
 ![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
+
+```r
+ggplot(alien) +
+  aes(x = colour, y = iron,colour = colour) +
+  geom_boxplot() +
+  scale_colour_identity() +
+  labs(title = "Alien glucose vs colour")
+```
+
+```
+## Warning: Removed 24 rows containing non-finite values (stat_boxplot).
+```
+
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+
+
 ### A hypothesis test
 
 Does the mean weight of male aliens differ from that of female aliens?
@@ -372,9 +390,9 @@ ggplot(alien) +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
-Then a T-Test (nul hypothesis mean(female) == mean(male))
+Then a T-Test (nulL hypothesis mean(female) == mean(male))
 
 
 ```r
@@ -411,7 +429,7 @@ ggplot(alien) +
   labs(title = "Alien glucose vs age")
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
 Then a simple linear model with age and sex as predictors...
 
@@ -460,7 +478,7 @@ qplot(res) +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
 
 
 
