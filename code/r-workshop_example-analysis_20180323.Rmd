@@ -2,22 +2,33 @@
 title: "Alien Data - Example Analysis"
 author: "Your name here"
 date: "2018-04-04"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
+    toc: yes
+    toc_float:
+      toc_collapsed: yes
 ---
 
-### Loading 'add-in' packages
+### (Install) and load 'add-in' packages
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
+# install these packages if they are not already there...
+if (!require("here")) install.packages("here")
+if (!require("skimr")) install.packages("skimr")
+
+# load main packages for this analysis
 library(tidyverse) # to tidy, manipulate and explore data
 library(readxl) # to import data from Excel
 library(here) # to make referring to files and folders consistent
+library(skimr) # nice quick summaries of data sets
 ```
 
 ### Import data
 
 ```{r}
-alien <- here("data", "data_alien-experiment-untidy_20180310.xlsx") %>% 
-  read_excel()
+alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx") 
+alien <- read_excel(alien_file, sheet = 1)
 ```
 
 
