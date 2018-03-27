@@ -60,6 +60,7 @@ dat <- dat %>%
   mutate(
     iron = as.numeric(colour == colours[1]) +
       sqrt(age) +
+      str_detect(sex, "^m|^M") * 2 +
       rnorm(n(), 20, 1),
     iron = round(iron, 1)
   )
