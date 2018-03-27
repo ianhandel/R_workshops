@@ -76,28 +76,10 @@ dat <- dat %>%
   )
 
 # add weight data
-dat <- dat %>% 
-  mutate(weight = assym -  50 * exp(- age / growth_rate) +
-           str_detect(sex, "^m|^M") * 15 +
-           rnorm(n(), 5, 2))
-
-# put blanks after first subject info
 dat <- dat %>%
-  arrange(subject, age) %>%
-  group_by(subject) %>%
-  mutate(
-    rep = 1:length(subject),
-    sex = case_when(
-      rep == 1 ~ sex,
-      TRUE ~ ""
-    ),
-    colour = case_when(
-      rep == 1 ~ colour,
-      TRUE ~ ""
-    )
-  ) %>%
-  ungroup() %>%
-  select(-rep)
+  mutate(weight = assym - 50 * exp(-age / growth_rate) +
+    str_detect(sex, "^m|^M") * 15 +
+    rnorm(n(), 5, 2))
 
 # make some ages in months
 dat <- dat %>%
@@ -107,7 +89,33 @@ dat <- dat %>%
       n(),
       replace = TRUE
     ), " months"),
-    TRUE ~ as.character(age)
+    TRUE ~ as.character(round(age))
   ))
 
+# remove temporary columns
+dat <- dat %>%
+  select(-assym, -growth_rate)
+
+
+# make some iron data 'missing'
+dat <- dat %>%
+  mutate(iron = case_when(runif(n(), 0, 1) > 0.95 ~ "*",
+                          TRUE ~ as.character(iron)))
+
+# capitalise SOME colours
+dat <- dat %>% 
+  mutate(colour = case_when(runif(n(), 0 , 1) > 0.80 ~ str_to_title(colour),
+                            TRUE ~ colour))
+
+# muck up the column names
+dat <- dat %>% 
+  rename(`alien colour` = colour,
+         `sex (male/female)` = sex,
+         `IQ - ref to human 100 scale!` = IQ)
+
+# shuffle rows
+dat <- dat %>% 
+  sample_frac()
+
+# write it!
 write_xlsx(dat, here("data", "data_alien-observational-untidy_20180310.xlsx"))
