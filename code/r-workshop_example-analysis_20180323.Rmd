@@ -4,6 +4,7 @@ author: "Your name here"
 date: "2018-04-04"
 output:
   html_document:
+    keep_md: true
     code_folding: show
     highlight: tango
     toc: yes
@@ -150,6 +151,16 @@ alien %>%
 
 ### Some graphics
 
+Plot to show frequency of different spottinesses
+```{r}
+ggplot(alien) +
+  aes(x = health, fill = health) +
+  geom_bar() +
+  labs(title = "The alien health",
+       x = "Health",
+       y = "Count")
+```
+
 Plot to show frequency of different colours...
 ```{r}
 ggplot(alien) +
@@ -158,15 +169,6 @@ ggplot(alien) +
   scale_fill_identity() +
   labs(title = "The alien colours",
        x = "Colour",
-       y = "Count")
-```
-Plot to show frequency of different spottinesses
-```{r}
-ggplot(alien) +
-  aes(x = health, fill = health) +
-  geom_bar() +
-  labs(title = "The alien health",
-       x = "Health",
        y = "Count")
 ```
 
@@ -187,6 +189,72 @@ ggplot(alien) +
   geom_point() +
   labs(title = "Alien glucose vs age")
 ```
+
+
+Glucose levels for different colours
+
+```{r}
+ggplot(alien) +
+  aes(x = glucose, fill = colour) +
+  geom_histogram() +
+  facet_wrap(~ colour) +
+  scale_fill_identity() +
+  labs(title = "Alien glucose vs colour")
+```
+
+### A hypothesis test
+
+Does the mean weight of male aliens differ from that of female aliens?
+
+First a plot...
+```{r}
+ggplot(alien) +
+  aes(x = weight) +
+  geom_histogram() +
+  facet_wrap(~ sex, ncol = 1)
+```
+
+Then a T-Test (nul hypothesis mean(female) == mean(male))
+
+```{r}
+t.test(weight ~ sex, data = alien)
+```
+
+### Finally a statistical 'model'
+
+How does weight change with age and sex
+
+First a plot...
+
+Scatterplot - age vs glucose - with fitted lines
+```{r}
+ggplot(alien) +
+  aes(x = age, y = glucose, colour = sex) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "Alien glucose vs age")
+```
+
+Then a simple linear model with age and sex as predictors...
+
+```{r}
+mod <- lm(weight ~ age + sex, data = alien)
+```
+
+```{r}
+summary(mod)
+```
+```{r}
+res <- residuals(mod)
+
+
+qplot(res) +
+  labs(title = "Residuals from simple linear model",
+       x = "residual")
+```
+
+
+
 
 
 
