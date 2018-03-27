@@ -6,7 +6,6 @@ output:
   html_document:
     keep_md: true
     code_folding: show
-    highlight: tango
     toc: yes
     toc_float:
       toc_collapsed: yes
@@ -29,7 +28,7 @@ library(skimr) # nice quick summaries of data sets
 ### Import data
 
 ```{r}
-alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx") 
+alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx")
 alien <- read_excel(alien_file, sheet = 1, na = "*")
 skim(alien)
 ```
@@ -41,18 +40,22 @@ Use `View (alien)` to eyeball the data too.
 Make subject a 'text' id rather than a number, padding with zeros.
 
 ```{r}
-alien <- alien %>% 
-  mutate(subject = str_pad(subject, width = 3, side = "left", "0"),
-         subject = str_c("A", subject))
+alien <- alien %>%
+  mutate(
+    subject = str_pad(subject, width = 3, side = "left", "0"),
+    subject = str_c("A", subject)
+  )
 ```
 
 Rename columns that don't follow good naming 'rules'
 
 ```{r}
-alien <- alien %>% 
-  rename(colour = `alien colour`,
-         sex = `sex (male/female)`,
-         IQ = `IQ - ref to human 100 scale!`)
+alien <- alien %>%
+  rename(
+    colour = `alien colour`,
+    sex = `sex (male/female)`,
+    IQ = `IQ - ref to human 100 scale!`
+  )
 ```
 
 Have a look at the colours...
@@ -66,7 +69,7 @@ alien %>%
 `colour` column has mixed capitalisation - make all lower case
 
 ```{r}
-alien <- alien %>% 
+alien <- alien %>%
   mutate(colour = str_to_lower(colour))
 ```
 
@@ -80,18 +83,21 @@ alien %>%
 Make sexes all 'm' or 'f' using first letter
 
 ```{r}
-alien <- alien %>% 
-  mutate(sex = str_sub(sex, 1, 1),
-         sex = str_to_lower(sex))
+alien <- alien %>%
+  mutate(
+    sex = str_sub(sex, 1, 1),
+    sex = str_to_lower(sex)
+  )
 ```
 
 Convert 'months' to 'years'
 
 ```{r}
-alien <- alien %>% 
+alien <- alien %>%
   mutate(age = if_else(str_detect(age, "months"),
-                       parse_number(age) / 12,
-                       parse_number(age)))
+    parse_number(age) / 12,
+    parse_number(age)
+  ))
 ```
 
 See how data looks so far...
@@ -103,7 +109,7 @@ skim(alien)
 Make `iron` column into a number
 
 ```{r}
-alien <- alien %>% 
+alien <- alien %>%
   mutate(iron = parse_number(iron))
 ```
 
@@ -133,21 +139,25 @@ alien %>%
 
 Mean and sd glucose
 ```{r}
-alien %>% 
-  summarise(mean(glucose),
-            sd(glucose),
-            min(glucose),
-            max(glucose))
+alien %>%
+  summarise(
+    mean(glucose),
+    sd(glucose),
+    min(glucose),
+    max(glucose)
+  )
 ```
 
 How about seeing if there's a sex difference?
 ```{r}
 alien %>%
-  group_by(sex) %>% 
-  summarise(mean(glucose),
-            sd(glucose),
-            min(glucose),
-            max(glucose))
+  group_by(sex) %>%
+  summarise(
+    mean(glucose),
+    sd(glucose),
+    min(glucose),
+    max(glucose)
+  )
 ```
 
 
@@ -158,9 +168,11 @@ Plot to show frequency of different spottinesses
 ggplot(alien) +
   aes(x = health, fill = health) +
   geom_bar() +
-  labs(title = "The alien health",
-       x = "Health",
-       y = "Count")
+  labs(
+    title = "The alien health",
+    x = "Health",
+    y = "Count"
+  )
 ```
 
 Plot to show frequency of different colours...
@@ -169,9 +181,11 @@ ggplot(alien) +
   aes(x = fct_reorder(colour, colour, length), fill = colour) +
   geom_bar() +
   scale_fill_identity() +
-  labs(title = "The alien colours",
-       x = "Colour",
-       y = "Count")
+  labs(
+    title = "The alien colours",
+    x = "Colour",
+    y = "Count"
+  )
 ```
 
 Single numerical variables. Look at glucose levels...
@@ -180,8 +194,10 @@ ggplot(alien) +
   aes(x = glucose) +
   geom_histogram() +
   facet_wrap(~ sex, ncol = 1) +
-  labs(title = "Alien glucose level",
-       x = "Glucose (mg/L)")
+  labs(
+    title = "Alien glucose level",
+    x = "Glucose (mg/L)"
+  )
 ```
 
 Scatterplot - age vs glucose
@@ -206,7 +222,7 @@ ggplot(alien) +
 
 ```{r}
 ggplot(alien) +
-  aes(x = colour, y = iron,colour = colour) +
+  aes(x = colour, y = iron, colour = colour) +
   geom_boxplot() +
   scale_colour_identity() +
   labs(title = "Alien glucose vs colour")
@@ -260,8 +276,10 @@ res <- residuals(mod)
 
 
 qplot(res) +
-  labs(title = "Residuals from simple linear model",
-       x = "residual")
+  labs(
+    title = "Residuals from simple linear model",
+    x = "residual"
+  )
 ```
 
 
