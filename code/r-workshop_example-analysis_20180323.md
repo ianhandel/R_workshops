@@ -21,7 +21,7 @@ library(skimr) # nice quick summaries of data sets
 
 
 ```r
-alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx") 
+alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx")
 alien <- read_excel(alien_file, sheet = 1, na = "*")
 skim(alien)
 ```
@@ -60,19 +60,23 @@ Make subject a 'text' id rather than a number, padding with zeros.
 
 
 ```r
-alien <- alien %>% 
-  mutate(subject = str_pad(subject, width = 3, side = "left", "0"),
-         subject = str_c("A", subject))
+alien <- alien %>%
+  mutate(
+    subject = str_pad(subject, width = 3, side = "left", "0"),
+    subject = str_c("A", subject)
+  )
 ```
 
 Rename columns that don't follow good naming 'rules'
 
 
 ```r
-alien <- alien %>% 
-  rename(colour = `alien colour`,
-         sex = `sex (male/female)`,
-         IQ = `IQ - ref to human 100 scale!`)
+alien <- alien %>%
+  rename(
+    colour = `alien colour`,
+    sex = `sex (male/female)`,
+    IQ = `IQ - ref to human 100 scale!`
+  )
 ```
 
 Have a look at the colours...
@@ -102,7 +106,7 @@ alien %>%
 
 
 ```r
-alien <- alien %>% 
+alien <- alien %>%
   mutate(colour = str_to_lower(colour))
 ```
 
@@ -130,19 +134,22 @@ Make sexes all 'm' or 'f' using first letter
 
 
 ```r
-alien <- alien %>% 
-  mutate(sex = str_sub(sex, 1, 1),
-         sex = str_to_lower(sex))
+alien <- alien %>%
+  mutate(
+    sex = str_sub(sex, 1, 1),
+    sex = str_to_lower(sex)
+  )
 ```
 
 Convert 'months' to 'years'
 
 
 ```r
-alien <- alien %>% 
+alien <- alien %>%
   mutate(age = if_else(str_detect(age, "months"),
-                       parse_number(age) / 12,
-                       parse_number(age)))
+    parse_number(age) / 12,
+    parse_number(age)
+  ))
 ```
 
 See how data looks so far...
@@ -182,9 +189,17 @@ Make `iron` column into a number
 
 
 ```r
-alien <- alien %>% 
+alien <- alien %>%
   mutate(iron = parse_number(iron))
 ```
+
+Finally sort by subject ID
+
+```r
+alien <- alien %>% 
+  arrange(subject)
+```
+
 
 Data now looks to be 'tidy and clean'. Next some exploratory analysis...
 
@@ -247,11 +262,13 @@ alien %>%
 Mean and sd glucose
 
 ```r
-alien %>% 
-  summarise(mean(glucose),
-            sd(glucose),
-            min(glucose),
-            max(glucose))
+alien %>%
+  summarise(
+    mean(glucose),
+    sd(glucose),
+    min(glucose),
+    max(glucose)
+  )
 ```
 
 ```
@@ -265,11 +282,13 @@ How about seeing if there's a sex difference?
 
 ```r
 alien %>%
-  group_by(sex) %>% 
-  summarise(mean(glucose),
-            sd(glucose),
-            min(glucose),
-            max(glucose))
+  group_by(sex) %>%
+  summarise(
+    mean(glucose),
+    sd(glucose),
+    min(glucose),
+    max(glucose)
+  )
 ```
 
 ```
@@ -289,12 +308,14 @@ Plot to show frequency of different spottinesses
 ggplot(alien) +
   aes(x = health, fill = health) +
   geom_bar() +
-  labs(title = "The alien health",
-       x = "Health",
-       y = "Count")
+  labs(
+    title = "The alien health",
+    x = "Health",
+    y = "Count"
+  )
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 Plot to show frequency of different colours...
 
@@ -303,12 +324,14 @@ ggplot(alien) +
   aes(x = fct_reorder(colour, colour, length), fill = colour) +
   geom_bar() +
   scale_fill_identity() +
-  labs(title = "The alien colours",
-       x = "Colour",
-       y = "Count")
+  labs(
+    title = "The alien colours",
+    x = "Colour",
+    y = "Count"
+  )
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 Single numerical variables. Look at glucose levels...
 
@@ -317,15 +340,17 @@ ggplot(alien) +
   aes(x = glucose) +
   geom_histogram() +
   facet_wrap(~ sex, ncol = 1) +
-  labs(title = "Alien glucose level",
-       x = "Glucose (mg/L)")
+  labs(
+    title = "Alien glucose level",
+    x = "Glucose (mg/L)"
+  )
 ```
 
 ```
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 Scatterplot - age vs glucose
 
@@ -336,7 +361,7 @@ ggplot(alien) +
   labs(title = "Alien glucose vs age")
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 
 Glucose levels for different colours
@@ -355,12 +380,12 @@ ggplot(alien) +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 
 
 ```r
 ggplot(alien) +
-  aes(x = colour, y = iron,colour = colour) +
+  aes(x = colour, y = iron, colour = colour) +
   geom_boxplot() +
   scale_colour_identity() +
   labs(title = "Alien glucose vs colour")
@@ -370,7 +395,7 @@ ggplot(alien) +
 ## Warning: Removed 24 rows containing non-finite values (stat_boxplot).
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 
 ### A hypothesis test
@@ -390,7 +415,7 @@ ggplot(alien) +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
 
 Then a T-Test (nulL hypothesis mean(female) == mean(male))
 
@@ -429,7 +454,7 @@ ggplot(alien) +
   labs(title = "Alien glucose vs age")
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 Then a simple linear model with age and sex as predictors...
 
@@ -470,15 +495,17 @@ res <- residuals(mod)
 
 
 qplot(res) +
-  labs(title = "Residuals from simple linear model",
-       x = "residual")
+  labs(
+    title = "Residuals from simple linear model",
+    x = "residual"
+  )
 ```
 
 ```
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+![](r-workshop_example-analysis_20180323_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
 
 
 

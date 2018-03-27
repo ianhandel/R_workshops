@@ -113,6 +113,13 @@ alien <- alien %>%
   mutate(iron = parse_number(iron))
 ```
 
+Finally sort by subject ID
+```{r}
+alien <- alien %>% 
+  arrange(subject)
+```
+
+
 Data now looks to be 'tidy and clean'. Next some exploratory analysis...
 
 ### Explore categorical data
