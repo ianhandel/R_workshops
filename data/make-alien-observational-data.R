@@ -3,8 +3,9 @@
 library(tidyverse)
 library(writexl)
 library(here)
+library(babynames)
 
-n <- 500
+n <- 200
 N <- 1000
 n_years <- 100
 colours <- c("red", "green", "orange", "purple")
@@ -12,6 +13,7 @@ colour_prob <- c(1, 4, 2, 6)
 sexes <- c("male", "female", "m", "F", "MALE", "Female")
 sex_probs <- c(10, 10, 1, 2, 1, 1)
 healths <- c("healthy", "slightly spotty", "spotty", "very spotty")
+regions <- c("Northland", "Southland", "Eastland", "Westland")
 
 
 set.seed(11)
@@ -25,10 +27,20 @@ dat <- tibble(
     prob = colour_prob,
     replace = TRUE
   ),
+  name = sample(
+    babynames$name,
+    n,
+    replace = TRUE
+  ),
   sex = sample(
     sexes,
     size = n,
     prob = sex_probs,
+    replace = TRUE
+  ),
+  region1 = sample(
+    regions,
+    size = n,
     replace = TRUE
   ),
   growth_rate = rnorm(n, 10, 2),
@@ -99,23 +111,45 @@ dat <- dat %>%
 
 # make some iron data 'missing'
 dat <- dat %>%
-  mutate(iron = case_when(runif(n(), 0, 1) > 0.95 ~ "*",
-                          TRUE ~ as.character(iron)))
+  mutate(iron = case_when(
+    runif(n(), 0, 1) > 0.95 ~ "*",
+    TRUE ~ as.character(iron)
+  ))
 
 # capitalise SOME colours
-dat <- dat %>% 
-  mutate(colour = case_when(runif(n(), 0 , 1) > 0.80 ~ str_to_title(colour),
-                            TRUE ~ colour))
+dat <- dat %>%
+  mutate(colour = case_when(
+    runif(n(), 0, 1) > 0.80 ~ str_to_title(colour),
+    TRUE ~ colour
+  ))
 
 # muck up the column names
-dat <- dat %>% 
-  rename(`alien colour` = colour,
-         `sex (male/female)` = sex,
-         `IQ - ref to human 100 scale!` = IQ)
+dat <- dat %>%
+  rename(
+    `IQ - ref to human 100 scale!` = IQ
+  )
 
-# shuffle rows
-dat <- dat %>% 
-  sample_frac()
+# shuffle rows, sort on region, insert blanks
+dat <- dat %>%
+  sample_frac() %>%
+  arrange(region1) %>%
+  group_by(region1) %>%
+  mutate(
+    rep = 1:length(region1),
+    region = case_when(
+      rep == 1 ~ unique(region1),
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  ungroup() %>%
+  select(-rep, -region1)
+
+# join sex and colour
+dat <- dat %>%
+  unite("type", c("sex", "colour"), sep = "_" )
+
+dat <- dat %>%
+  select(region, subject, name, everything())
 
 # write it!
 write_xlsx(dat, here("data", "data_alien-observational-untidy_20180310.xlsx"))
