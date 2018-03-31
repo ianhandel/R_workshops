@@ -156,3 +156,7 @@ dat <- dat %>%
 
 # write it!
 write_xlsx(dat, here("data", "aliendata_20180331.xlsx"))
+
+fs::file_copy(here("data", "aliendata_20180331.xlsx"),
+              "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180331.xlsx",
+              overwrite = TRUE)
