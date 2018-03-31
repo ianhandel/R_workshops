@@ -38,11 +38,11 @@ dat <- tibble(
     prob = sex_probs,
     replace = TRUE
   ),
-  region1 = sample(
+  region1 = factor(sample(
     regions,
     size = n,
     replace = TRUE
-  ),
+  )),
   growth_rate = rnorm(n, 10, 2),
   assym = rnorm(n, 100, 10)
 )
@@ -72,6 +72,7 @@ dat <- dat %>%
   mutate(
     iron = as.numeric(colour == colours[1]) * 3 +
       sqrt(age) +
+      as.numeric(region1) * 4 +
       str_detect(sex, "^m|^M") * 2 +
       rnorm(n(), 20, 1),
     iron = round(iron, 1)
@@ -91,7 +92,8 @@ dat <- dat %>%
 dat <- dat %>%
   mutate(weight = assym - 50 * exp(-age / growth_rate) +
     str_detect(sex, "^m|^M") * 15 +
-    rnorm(n(), 5, 2))
+    rnorm(n(), 5, 2),
+    weight = round(weight, 2))
 
 # make some ages in months
 dat <- dat %>%
@@ -126,7 +128,8 @@ dat <- dat %>%
 # muck up the column names
 dat <- dat %>%
   rename(
-    `IQ - ref to human 100 scale!` = IQ
+    `IQ - ref to human 100 scale!` = IQ,
+    `glucose - mg/L` = glucose
   )
 
 # shuffle rows, sort on region, insert blanks
@@ -138,7 +141,7 @@ dat <- dat %>%
     rep = 1:length(region1),
     region = case_when(
       rep == 1 ~ unique(region1),
-      TRUE ~ NA_character_
+      TRUE ~ NA_integer_
     )
   ) %>%
   ungroup() %>%
@@ -152,4 +155,4 @@ dat <- dat %>%
   select(region, subject, name, everything())
 
 # write it!
-write_xlsx(dat, here("data", "data_alien-observational-untidy_20180310.xlsx"))
+write_xlsx(dat, here("data", "aliendata_20180331.xlsx"))
