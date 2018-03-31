@@ -1,13 +1,12 @@
 Claire Phillips <Claire.Phillips@ed.ac.uk>, Margo Chase-Topping <Margo.Chase@ed.ac.uk>, Carlos Sanchez Soriano <s1790145@sms.ed.ac.uk>, Marco Esposito <s1575942@sms.ed.ac.uk>, Bernadette Dutia <bernadette.dutia@roslin.ed.ac.uk>, KING Declan <declan.king@roslin.ed.ac.uk>, Elizabeth Burrough <Liz.Burrough@ed.ac.uk>, Zofia.Lisowski@roslin.ed.ac.uk, Deborah Hoyle <Deborah.Hoyle@ed.ac.uk>, Jorge Del-Pozo <Jorge.Del.Pozo@ed.ac.uk>, Gabriela Peniche <gabriela.peniche@roslin.ed.ac.uk>, Tyler.Morrison@ed.ac.uk, Ricardo Perez Enriquez <rperez@cibnor.mx>, Edita Bulovaite <s1247839@sms.ed.ac.uk>, Syamira Zaini <s1582189@sms.ed.ac.uk>, Tessa Nash <esther.nash@roslin.ed.ac.uk>, Carina Conceição <s1581717@sms.ed.ac.uk>, Mcgrath Jenni Irving <j.irvingmcgrath@ed.ac.uk>, Mayumi Fujiwara <mayumi.fujiwara@sruc.ac.uk>, Stephen Fitzgerald <stephen.fitzgerald@roslin.ed.ac.uk>, Seema Jasim <seema.jasim@roslin.ed.ac.uk>, Imogen Johnston-Menzies <Imogen.Johnston-Menzies@roslin.ed.ac.uk>, Lizzie Billington <s1770672@sms.ed.ac.uk>, Richard Mellanby <Richard.Mellanby@ed.ac.uk>, Maciej Parys <mparys@exseed.ed.ac.uk>, Louise Connelly <louise.connelly@ed.ac.uk>, Yue du Du <DuYue.Dina@ed.ac.uk>, Stella Mazeri <smazeri@exseed.ed.ac.uk>, Rebecca Callaby <Rebecca.Callaby@roslin.ed.ac.uk>, Charlotte Woolley <s1576473@sms.ed.ac.uk>, Natascha Meunier <natascha.meunier@ed.ac.uk>, Jill MacKay <jill.mackay@ed.ac.uk>
 
-
 Hi all,
 
 Thanks for signing up.
 
 Currently there’s about 26 people signed up. We can run with that as I have both G02 and G02A booked.
 
-Please let me know  if it turns out you can’t make it. No problem -it’d  just be good to know.
+Please let me know  if it turns out you can’t make it. No problem - it’d  just be good to know.
 
 I set up the Doodle whilst in France so it says 1-4pm UK but as per original email the workshop is running 2 - 5pm UK (sorry - Doodle is smarter than me).
 
@@ -22,11 +21,11 @@ If you’d like to use your own laptop please install R and RStudio. Both are fr
 	To test your installation start RStudio (not R).
 	You should see something that looks like the attached RStudio.png with a flashing vertical ‘cursor’ next to the ‘>’ in the big window.
 	If you type 2 + 3 and then press the ‘enter’ key on your keyboard you should get the response [1] 5
-	If that happens RStudio and R are installed and working so you are good to go.
+	If that happens RStudio and R are installed and working so you are good to go. (You’ll need internet access for your laptop on Wednesday too)
 
 	Any problems with installation drop me an email so we can get going on Wednesday without having to worry about install issues. If your’e not brining a laptop there are ample PC’s in G02 with R and RStudio pre-installed.
 
-On Wednesday you’ll need to download some data and R files onto your laptop or PC in G02. Could you check before then that you can see contents of the following Dropbox shared folder? Just now there’s just one file ‘aliendata-20180331.xlsx'
+On Wednesday everyone will need to download some data and R files onto their laptop or University PC in G02. Could you check before then that you can see contents of the following Dropbox shared folder? Just now there’s just one file ‘aliendata-20180331.xlsx'
 
 https://bit.ly/2H1f1Nk
 

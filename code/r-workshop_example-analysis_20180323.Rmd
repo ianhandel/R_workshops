@@ -28,7 +28,7 @@ library(skimr) # nice quick summaries of data sets
 ### Import data
 
 ```{r}
-alien_file <- here("data", "data_alien-observational-untidy_20180310.xlsx")
+alien_file <- here("data", "aliendata_20180331.xlsx")
 alien <- read_excel(alien_file, sheet = 1, na = "*")
 skim(alien)
 ```
@@ -36,6 +36,13 @@ skim(alien)
 Use `View (alien)` to eyeball the data too.
 
 ### Tidy and clean data
+
+fill region
+
+```{r}
+alien <- alien %>% 
+  fill(region)
+```
 
 Make subject a 'text' id rather than a number, padding with zeros.
 
@@ -46,6 +53,16 @@ alien <- alien %>%
     subject = str_c("A", subject)
   )
 ```
+
+
+
+Split type
+```{r}
+alien <- alien %>% 
+  separate(type, c("sex", "colour"), "_")
+```
+
+
 
 Rename columns that don't follow good naming 'rules'
 
@@ -262,19 +279,19 @@ How does weight change with age and sex
 
 First a plot...
 
-Scatterplot - age vs glucose - with fitted lines
+Scatterplot - iron vs age - with fitted lines
 ```{r}
 ggplot(alien) +
-  aes(x = age, y = glucose, colour = sex) +
+  aes(x = age, y = iron, colour = sex) +
   geom_point() +
-  geom_smooth(method = "lm") +
-  labs(title = "Alien glucose vs age")
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Alien iron vs age")
 ```
 
 Then a simple linear model with age and sex as predictors...
 
 ```{r}
-mod <- lm(weight ~ age + sex, data = alien)
+mod <- lm(iron ~ age + sex + region, data = alien)
 ```
 
 ```{r}
