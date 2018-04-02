@@ -14,5 +14,4 @@
 
 ## Alien analysis
 1. New Rmd Document for alien analysis
-2. Talk about here:: package
-3. Import raw untidy data
+2. Import raw untidy data
