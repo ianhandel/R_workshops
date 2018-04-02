@@ -10,11 +10,13 @@ output:
     code_folding: show
 ---
   
+## Load the packages we'll need
 
 ```{r}
 library(tidyverse)
 library(readxl)
 library(skimr)
+library(knitr)
 ```
 
 ## Import data
@@ -99,6 +101,58 @@ An overall summary (uses skim from the skimr package)
 skim(alien)
 ```
 
+How many aliens?
+```{r}
+alien %>% count()
+```
 
+How many aliens from each region?
+```{r}
+alien %>% 
+  count(region)
+```
+How many aliens of each colour in each region?
+```{r}
+alien %>% 
+  count(region, colour)
+```
+And in order of decreasing frequency...
+```{r}
+alien %>% 
+  count(colour, sort = TRUE)
+```
+Most common colour
+```{r}
+alien %>% 
+  count(colour, sort = TRUE) %>% 
+  top_n(1)
+```
+Most common colour in each region
+```{r}
+alien %>%
+  group_by(region) %>% 
+  count(colour, sort = TRUE) %>% 
+  top_n(1)
+```
+
+### Some summary statistics
+
+mean, median and sd
+```{r}
+alien %>% 
+  summarise(mean(glucose), median(glucose), sd(glucose))
+```
+summaries for each colour
+```{r}
+alien %>%
+  group_by(colour) %>% 
+  summarise(mean = mean(glucose),
+            median = median(glucose),
+            sd = sd(glucose)) %>% 
+  kable(digits = 2, caption = "Glucose (mg/L)")
+```
+
+
+## Visualisation
 
 

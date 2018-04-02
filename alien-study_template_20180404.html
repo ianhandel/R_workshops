@@ -241,13 +241,15 @@ div.tocify {
 </div>
 
 
+<div id="load-the-packages-well-need" class="section level2">
+<h2>Load the packages we’ll need</h2>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.4
 ## ✔ tidyr   0.8.0     ✔ stringr 1.3.0
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(readxl)
@@ -258,6 +260,13 @@ library(skimr)</code></pre>
 ## 
 ##     contains, ends_with, everything, matches, num_range, one_of,
 ##     starts_with</code></pre>
+<pre class="r"><code>library(knitr)</code></pre>
+<pre><code>## 
+## Attaching package: 'knitr'</code></pre>
+<pre><code>## The following object is masked from 'package:skimr':
+## 
+##     kable</code></pre>
+</div>
 <div id="import-data" class="section level2">
 <h2>Import data</h2>
 <p>Load in data</p>
@@ -331,6 +340,134 @@ library(skimr)</code></pre>
 ##  1032    ▁▂▇▆▃▁▁▁
 ##    41    ▁▁▂▇▇▆▅▁
 ##   141.83 ▁▁▃▅▇▇▃▁</code></pre>
+<p>How many aliens?</p>
+<pre class="r"><code>alien %&gt;% count()</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##       n
+##   &lt;int&gt;
+## 1   200</code></pre>
+<p>How many aliens from each region?</p>
+<pre class="r"><code>alien %&gt;% 
+  count(region)</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   region        n
+##   &lt;chr&gt;     &lt;int&gt;
+## 1 Eastland     53
+## 2 Northland    52
+## 3 Southland    47
+## 4 Westland     48</code></pre>
+<p>How many aliens of each colour in each region?</p>
+<pre class="r"><code>alien %&gt;% 
+  count(region, colour)</code></pre>
+<pre><code>## # A tibble: 16 x 3
+##    region    colour     n
+##    &lt;chr&gt;     &lt;chr&gt;  &lt;int&gt;
+##  1 Eastland  green     14
+##  2 Eastland  orange    10
+##  3 Eastland  purple    27
+##  4 Eastland  red        2
+##  5 Northland green     18
+##  6 Northland orange     3
+##  7 Northland purple    29
+##  8 Northland red        2
+##  9 Southland green     20
+## 10 Southland orange     6
+## 11 Southland purple    18
+## 12 Southland red        3
+## 13 Westland  green     11
+## 14 Westland  orange     5
+## 15 Westland  purple    31
+## 16 Westland  red        1</code></pre>
+<p>And in order of decreasing frequency…</p>
+<pre class="r"><code>alien %&gt;% 
+  count(colour, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   colour     n
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 purple   105
+## 2 green     63
+## 3 orange    24
+## 4 red        8</code></pre>
+<p>Most common colour</p>
+<pre class="r"><code>alien %&gt;% 
+  count(colour, sort = TRUE) %&gt;% 
+  top_n(1)</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   colour     n
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 purple   105</code></pre>
+<p>Most common colour in each region</p>
+<pre class="r"><code>alien %&gt;%
+  group_by(region) %&gt;% 
+  count(colour, sort = TRUE) %&gt;% 
+  top_n(1)</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre><code>## # A tibble: 4 x 3
+## # Groups:   region [4]
+##   region    colour     n
+##   &lt;chr&gt;     &lt;chr&gt;  &lt;int&gt;
+## 1 Westland  purple    31
+## 2 Northland purple    29
+## 3 Eastland  purple    27
+## 4 Southland green     20</code></pre>
+<div id="some-summary-statistics" class="section level3">
+<h3>Some summary statistics</h3>
+<p>mean, median and sd</p>
+<pre class="r"><code>alien %&gt;% 
+  summarise(mean(glucose), median(glucose), sd(glucose))</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   `mean(glucose)` `median(glucose)` `sd(glucose)`
+##             &lt;dbl&gt;             &lt;dbl&gt;         &lt;dbl&gt;
+## 1            15.4              15.2          3.31</code></pre>
+<p>summaries for each colour</p>
+<pre class="r"><code>alien %&gt;%
+  group_by(colour) %&gt;% 
+  summarise(mean = mean(glucose),
+            median = median(glucose),
+            sd = sd(glucose)) %&gt;% 
+  kable(digits = 2, caption = &quot;Glucose (mg/L)&quot;)</code></pre>
+<table>
+<caption>Glucose (mg/L)</caption>
+<thead>
+<tr class="header">
+<th align="left">colour</th>
+<th align="right">mean</th>
+<th align="right">median</th>
+<th align="right">sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">green</td>
+<td align="right">15.07</td>
+<td align="right">15.12</td>
+<td align="right">3.64</td>
+</tr>
+<tr class="even">
+<td align="left">orange</td>
+<td align="right">15.77</td>
+<td align="right">15.54</td>
+<td align="right">3.59</td>
+</tr>
+<tr class="odd">
+<td align="left">purple</td>
+<td align="right">15.64</td>
+<td align="right">15.47</td>
+<td align="right">3.09</td>
+</tr>
+<tr class="even">
+<td align="left">red</td>
+<td align="right">14.89</td>
+<td align="right">14.10</td>
+<td align="right">2.66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="visualisation" class="section level2">
+<h2>Visualisation</h2>
 </div>
 
 
