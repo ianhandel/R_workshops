@@ -51,13 +51,9 @@ alien <- alien %>%
 ```
 
 
-Pad zero's onto their subject ID and add an 'A'
+Add an 'A' to ID
 ```{r}
 alien <- alien %>% 
-  mutate(subject = str_pad(subject,
-                           width = 3,
-                           side = "left",
-                           pad = "0")) %>% 
   mutate(subject = str_c("A", subject))
 ```
 
