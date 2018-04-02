@@ -10,8 +10,8 @@ N <- 1000
 n_years <- 100
 colours <- c("red", "green", "orange", "purple")
 colour_prob <- c(1, 4, 2, 6)
-sexes <- c("male", "female", "m", "F", "MALE", "Female")
-sex_probs <- c(10, 10, 1, 2, 1, 1)
+sexes <- c("male", "female", "m", "f")
+sex_probs <- c(10, 10, 1, 2)
 healths <- c("healthy", "slightly spotty", "spotty", "very spotty")
 regions <- c("Northland", "Southland", "Eastland", "Westland")
 
@@ -155,8 +155,8 @@ dat <- dat %>%
   select(region, subject, name, everything())
 
 # write it!
-write_xlsx(dat, here("data", "aliendata_20180331.xlsx"))
+write_xlsx(dat, here("aliendata_20180331.xlsx"))
 
-fs::file_copy(here("data", "aliendata_20180331.xlsx"),
+fs::file_copy(here("aliendata_20180331.xlsx"),
               "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180331.xlsx",
               overwrite = TRUE)

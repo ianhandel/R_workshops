@@ -4,10 +4,10 @@ author: "Your name here"
 date: "2018-04-04"
 output:
   html_document:
-code_folding: show
-toc: yes
-toc_float:
-  toc_collapsed: yes
+    code_folding: show
+  toc: yes
+  toc_float:
+    toc_collapsed: yes
 ---
   
 
@@ -17,10 +17,84 @@ library(readxl)
 library(skimr)
 ```
 
-### Load in data
+### Data import, clean and tidy
+
+Load in data
 
 ```{r}
-alien <- read_excel("")
+alien <- read_excel("aliendata_20180331.xlsx",
+                    sheet = 1,
+                    na = "*")
+```
+
+Fill down the missing region data (before bad things happen)
+```{r}
+alien <- alien %>% 
+  fill(region)
+```
+
+Remove alien names (it's personal data we don't need!)
+```{r}
+alien <- alien %>% 
+  select(- name)
+```
+
+Rename the comolicated columns
+```{r}
+alien <- alien %>% 
+  rename(glucose = "glucose - mg/L",
+         iq = "IQ - ref to human 100 scale!")
+```
+
+
+Pad zero's onto their subject ID and add an 'A'
+```{r}
+alien <- alien %>% 
+  mutate(subject = str_pad(subject,
+                           width = 3,
+                           side = "left",
+                           pad = "0")) %>% 
+  mutate(subject = str_c("A", subject))
+```
+
+Separate 'type' into 'sex' and 'colour'
+```{r}
+alien <- alien %>% 
+  separate(type, into = c("sex", "colour"), sep = "_")
+```
+
+Use first letter of 'sex' as some are abbreviated
+```{r}
+alien <- alien %>% 
+  mutate(sex = str_sub(sex, 1, 1))
+```
+
+Make all the colour lower case as some mixed!
+```{r}
+alien <- alien %>% 
+  mutate(colour = str_to_lower(colour))
+```
+
+If age mentions months divide by 12
+```{r}
+alien <- alien %>% 
+  mutate(age = case_when(str_detect(age, "month") ~ parse_number(age) / 12,
+                   TRUE ~ parse_number(age)))
+```
+
+Make iron a numeric column
+```{r}
+alien <- alien %>% 
+  mutate(iron = parse_number(iron))
+```
+
+Data cleaning and tidying over (hopefully!)
+
+## Explore data
+
+An overall summary (uses skim from the skimr package)
+```{r}
+skim(alien)
 ```
 
 
