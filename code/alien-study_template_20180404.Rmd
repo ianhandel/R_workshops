@@ -1,0 +1,12 @@
+---
+title: "Alien Study - Example Analysis"
+author: "Your name here"
+date: "2018-04-04"
+output:
+  html_document:
+code_folding: show
+toc: yes
+toc_float:
+  toc_collapsed: yes
+---
+  
