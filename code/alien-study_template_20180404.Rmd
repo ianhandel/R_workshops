@@ -10,3 +10,17 @@ toc_float:
   toc_collapsed: yes
 ---
   
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(skimr)
+```
+
+### Load in data
+
+```{r}
+alien <- read_excel("")
+```
+
+
