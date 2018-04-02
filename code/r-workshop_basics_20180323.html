@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Your name here" />
+<meta name="author" content="Ian Handel" />
 
 <meta name="date" content="2018-04-04" />
 
@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">R_Workshop</h1>
-<h4 class="author"><em>Your name here</em></h4>
+<h4 class="author"><em>Ian Handel</em></h4>
 <h4 class="date"><em>2018-04-04</em></h4>
 
 </div>
@@ -132,6 +132,14 @@ $(document).ready(function () {
 x &lt;- 99
 x</code></pre>
 <pre><code>## [1] 99</code></pre>
+<pre class="r"><code># add 1 to what's in x and show the answer
+x + 1</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>x</code></pre>
+<pre><code>## [1] 99</code></pre>
+<pre class="r"><code># check what's in x
+x</code></pre>
+<pre><code>## [1] 99</code></pre>
 <pre class="r"><code># put 53 into an object called 'age' then show what's in 'age'
 age &lt;- 53
 age</code></pre>
@@ -140,37 +148,61 @@ age</code></pre>
 age  &lt;- x
 age</code></pre>
 <pre><code>## [1] 99</code></pre>
-<pre class="r"><code># put integers 1 to 10 into 'nums' and show what's in 'nums'
-nums &lt;- 2:10
+<pre class="r"><code># put some numbers into 'nums' and show what's in 'nums'
+nums &lt;- c(5, 7, 11, 23, 99, 23, 1, 4, 4)
 nums</code></pre>
-<pre><code>## [1]  2  3  4  5  6  7  8  9 10</code></pre>
+<pre><code>## [1]  5  7 11 23 99 23  1  4  4</code></pre>
 <pre class="r"><code># show the square root of each number in 'nums'
 sqrt(nums)</code></pre>
-<pre><code>## [1] 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751 2.828427 3.000000
-## [9] 3.162278</code></pre>
+<pre><code>## [1] 2.236068 2.645751 3.316625 4.795832 9.949874 4.795832 1.000000 2.000000
+## [9] 2.000000</code></pre>
 <pre class="r"><code># show the total of the numbers in 'nums'
 sum(nums)</code></pre>
-<pre><code>## [1] 54</code></pre>
+<pre><code>## [1] 177</code></pre>
 <pre class="r"><code># show the arithemtic mean of what's in 'nums'
 mean(nums)</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 19.66667</code></pre>
 </div>
 <div id="try-some-other-functions" class="section level3">
 <h3>Try some other functions</h3>
 <pre class="r"><code>length(nums)</code></pre>
 <pre><code>## [1] 9</code></pre>
+<pre class="r"><code>sort(nums)</code></pre>
+<pre><code>## [1]  1  4  4  5  7 11 23 23 99</code></pre>
 <pre class="r"><code>rev(nums)</code></pre>
-<pre><code>## [1] 10  9  8  7  6  5  4  3  2</code></pre>
+<pre><code>## [1]  4  4  1 23 99 23 11  7  5</code></pre>
 <pre class="r"><code>sample(nums)</code></pre>
-<pre><code>## [1]  5  7  6  4  2 10  3  8  9</code></pre>
+<pre><code>## [1]  5  4  7 11  1 99 23  4 23</code></pre>
 <pre class="r"><code>sample(nums)</code></pre>
-<pre><code>## [1]  7  4  8  2  5  9 10  3  6</code></pre>
+<pre><code>## [1] 23 99  5 11  1 23  4  7  4</code></pre>
 <pre class="r"><code>min(nums)</code></pre>
-<pre><code>## [1] 2</code></pre>
+<pre><code>## [1] 1</code></pre>
 <pre class="r"><code>max(nums)</code></pre>
-<pre><code>## [1] 10</code></pre>
+<pre><code>## [1] 99</code></pre>
 <pre class="r"><code>median(nums)</code></pre>
-<pre><code>## [1] 6</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>head(nums)</code></pre>
+<pre><code>## [1]  5  7 11 23 99 23</code></pre>
+<pre class="r"><code>?head
+head(nums, n = 3)</code></pre>
+<pre><code>## [1]  5  7 11</code></pre>
+</div>
+<div id="installing-add-in-packages" class="section level3">
+<h3>Installing add-in packages</h3>
+<pre><code>install.packages(&quot;tidyverse&quot;)
+install.packages(&quot;skimr&quot;)</code></pre>
+</div>
+<div id="loading-add-in-packages" class="section level3">
+<h3>Loading ‘add-in’ packages</h3>
+<pre class="r"><code>library(tidyverse) # to tidy, manipulate and explore data</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.4
+## ✔ tidyr   0.8.0     ✔ stringr 1.3.0
+## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div id="rivers-data" class="section level3">
 <h3>Rivers data</h3>
@@ -186,39 +218,25 @@ mean(nums)</code></pre>
 ## [113]  538 1100 1205  314  237  610  360  540 1038  424  310  300  444  301
 ## [127]  268  620  215  652  900  525  246  360  529  500  720  270  430  671
 ## [141] 1770</code></pre>
-<pre class="r"><code>mean(rivers)</code></pre>
-<pre><code>## [1] 591.1844</code></pre>
-<pre class="r"><code>min(rivers)</code></pre>
-<pre><code>## [1] 135</code></pre>
-<pre class="r"><code>max(rivers)</code></pre>
-<pre><code>## [1] 3710</code></pre>
-<pre class="r"><code>length(rivers)</code></pre>
-<pre><code>## [1] 141</code></pre>
-</div>
-<div id="loading-add-in-packages" class="section level3">
-<h3>Loading ‘add-in’ packages</h3>
-<pre class="r"><code>library(tidyverse) # to tidy, manipulate and explore data</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
-## ✔ tibble  1.4.2     ✔ dplyr   0.7.4
-## ✔ tidyr   0.8.0     ✔ stringr 1.3.0
-## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>?rivers</code></pre>
+<p>Find the length of the shortest and longest rivers. How many rivers in this set? Whats the mean (and median length)?</p>
 </div>
 <div id="introducing-the-pipe" class="section level3">
 <h3>Introducing the ‘pipe’</h3>
 <pre class="r"><code># put the square root of 'nums' into 'roots'
 # then put the sum of that into sum_roots
 roots &lt;- sqrt(nums)
-sum_roots &lt;- sum(roots)
-sum_roots</code></pre>
-<pre><code>## [1] 21.46828</code></pre>
+sum_roots1 &lt;- sum(roots)
+sum_roots1</code></pre>
+<pre><code>## [1] 32.73998</code></pre>
+<pre class="r"><code># do it all in one go
+sum_roots2 &lt;- sum(sqrt(nums))
+sum_roots2</code></pre>
+<pre><code>## [1] 32.73998</code></pre>
 <pre class="r"><code># as above using the 'pipe'
-sum_roots &lt;- nums %&gt;% sqrt() %&gt;% sum()
-sum_roots</code></pre>
-<pre><code>## [1] 21.46828</code></pre>
+sum_roots3 &lt;- nums %&gt;% sqrt() %&gt;% sum()
+sum_roots3</code></pre>
+<pre><code>## [1] 32.73998</code></pre>
 </div>
 
 

@@ -1,6 +1,6 @@
 ---
 title: "R_Workshop"
-author: "Your name here"
+author: "Ian Handel"
 date: "2018-04-04"
 output: html_document
 ---
@@ -12,6 +12,13 @@ output: html_document
 x <- 99
 x
 
+# add 1 to what's in x and show the answer
+x + 1
+x
+
+# check what's in x
+x
+
 # put 53 into an object called 'age' then show what's in 'age'
 age <- 53
 age
@@ -20,8 +27,8 @@ age
 age  <- x
 age
 
-# put integers 1 to 10 into 'nums' and show what's in 'nums'
-nums <- 2:10
+# put some numbers into 'nums' and show what's in 'nums'
+nums <- c(5, 7, 11, 23, 99, 23, 1, 4, 4)
 nums
 
 # show the square root of each number in 'nums'
@@ -37,27 +44,23 @@ mean(nums)
 ### Try some other functions
 ```{r}
 length(nums)
+sort(nums)
 rev(nums)
 sample(nums)
 sample(nums)
 min(nums)
 max(nums)
 median(nums)
+head(nums)
+?head
+head(nums, n = 3)
 ```
 
-### Rivers data
-```{r}
-rivers
-
-mean(rivers)
-min(rivers)
-max(rivers)
-length(rivers)
-
+### Installing add-in packages
 ```
-
-
-
+install.packages("tidyverse")
+install.packages("skimr")
+```
 
 ### Loading 'add-in' packages
 
@@ -65,22 +68,39 @@ length(rivers)
 library(tidyverse) # to tidy, manipulate and explore data
 ```
 
+
+### Rivers data
+```{r}
+rivers
+?rivers
+```
+
+Find the length of the shortest and longest rivers.
+How many rivers in this set?
+Whats the mean (and median length)?
+
 ### Introducing the 'pipe'
 
 ```{r}
 # put the square root of 'nums' into 'roots'
 # then put the sum of that into sum_roots
 roots <- sqrt(nums)
-sum_roots <- sum(roots)
-sum_roots
+sum_roots1 <- sum(roots)
+sum_roots1
 ```
 
 ```{r}
-# as above using the 'pipe'
-sum_roots <- nums %>% sqrt() %>% sum()
-sum_roots
+# do it all in one go
+sum_roots2 <- sum(sqrt(nums))
+sum_roots2
 ```
 
+
+```{r}
+# as above using the 'pipe'
+sum_roots3 <- nums %>% sqrt() %>% sum()
+sum_roots3
+```
 
 
 
