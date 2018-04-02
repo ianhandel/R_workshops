@@ -4,10 +4,10 @@ author: "Your name here"
 date: "2018-04-04"
 output:
   html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
     code_folding: show
-  toc: yes
-  toc_float:
-    toc_collapsed: yes
 ---
   
 
@@ -17,7 +17,7 @@ library(readxl)
 library(skimr)
 ```
 
-### Data import, clean and tidy
+## Import data
 
 Load in data
 
@@ -26,6 +26,8 @@ alien <- read_excel("aliendata_20180331.xlsx",
                     sheet = 1,
                     na = "*")
 ```
+
+## Tidy and clean data
 
 Fill down the missing region data (before bad things happen)
 ```{r}
@@ -39,7 +41,7 @@ alien <- alien %>%
   select(- name)
 ```
 
-Rename the comolicated columns
+Rename the complicated columns
 ```{r}
 alien <- alien %>% 
   rename(glucose = "glucose - mg/L",
@@ -96,5 +98,7 @@ An overall summary (uses skim from the skimr package)
 ```{r}
 skim(alien)
 ```
+
+
 
 
