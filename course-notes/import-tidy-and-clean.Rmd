@@ -1,0 +1,134 @@
+---
+title: "Importing, tidying and cleaning data"
+output: 
+  html_document:
+    highlight: pygments
+    css: lab.css
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+These are brief notes on data import, tidying and cleaning. For much more detail and explanation see Hadley Wickham's book:
+`R for Data Science` (R4DS) at (http://r4ds.had.co.nz/wrangle-intro.html).
+
+# Load the tidyverse
+
+Before importing or tidying data run...
+```{r}
+library(tidyverse)
+```
+...to load the `tidyverse` set of packages first.
+
+# Importing data
+
+## From Excel files
+
+Uses use the `read_excel()` function from the `readxl` package. It's installed with the `tidyverse` but you need to load it before using it with...
+
+```{r}
+library(readxl)
+```
+
+Then to read a sheet called "my-sheet-name-or-number" from an Excel workbook called "my-excel-file.xls", skipping the first 5 rows, into an R object called mydata use... 
+
+```{r}
+mydata <- read_excel("my-excel-file.xls",
+                 sheet = "my-sheet-name-or-number",
+                 skip = 5)
+```
+
+## From comma-separated value files (csv)
+
+Use the `read_csv()` function from the `readr` package. This is loaded automatically when the `tidyverse` is loaded.
+
+To read a csv file called "my-csv-file.csv" which includes a header row into a new R object called mydata use...
+
+```{r}
+mydat <- read_csv("my-csv-file.csv")
+```
+
+# Tidying data
+
+## Filling down blanks
+To fill down any blank cells in the `patient` and `breed` columns of `mydata` use...
+
+```{r}
+mydata <- mydata %>% 
+  fill(patient, breed)
+```
+
+## Selecting or removing columns
+
+The `select` verb lets you choose or remove columns. To remove the name column from mydata use...
+
+```{r}
+mydata <- mydata %>% 
+  select(-name)
+```
+
+To just select `subject` and all columns between `age` and `glucose` in mydata use...
+
+```{r}
+mydata <- mydata %>% 
+  select(subject, age:glucose)
+```
+
+## Renaming columns
+
+To `rename` the column `sex (m/f)` to `sex` use...
+```{r}
+mydata <- mydata %>% 
+  rename(sex = `sex (m/f)`)
+```
+Note that the backticks `` let you choose columns that have names that would not normally be allowed in R.
+
+## Separating a columns into 2 (or more) new columns
+
+A column that contains data that should be in two separate columns can be split using `separate()`. To split a column called `sex_status` into two columns, `sex` and `status` using `_` as a separator use...
+
+```{r}
+mydata <- mydata %>% 
+  separate(sex_status,
+           into = c("sex", "status"),
+           sep = "_")
+```
+
+This would split "male_neutered" in one column into "male" and "neutered" in two separate columns etc.
+
+## Creating and changing column content
+
+To make a new column use `mutate()`. For example if you have a column `weight` you can add a column log_wt containing `log(weight)` like this...
+
+```{r}
+mydata <- mydata %>% 
+  mutate(log_wt = log(weight))
+```
+
+Mutate can also overwrite columns (but be carefule). So to convert height in inches to height in cm in the same column you could use...
+
+```{r}
+mydata <- mydata %>% 
+  mutate(height = height * 2.54)
+```
+
+## Gathering data in several columns
+Sometimes data at diffrent times are stored in one column per time. To convert theses into a column for meaurement time and a column for the actual data use the `gather` verb. For example if there were three columns `w_1`, `w_2` and `w_3` all holding weight data at each week these could be converted to a column for week and a column for weight...
+
+```{r}
+mydata <- mydata %>% 
+  gather(key = "week",
+         value = "weight",
+         w_1, w_2, w_3)
+```
+
+This can be tricky at first so for more detail see R4DS (http://r4ds.had.co.nz/tidy-data.html#gathering)
+
+
+
+
+
+
+
+
