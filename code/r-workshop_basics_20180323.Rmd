@@ -51,10 +51,17 @@ sample(nums)
 min(nums)
 max(nums)
 median(nums)
-head(nums)
-?head
-head(nums, n = 3)
 ```
+
+### Function arguments
+```{r}
+pi
+round(pi)
+round(pi, digits = 4)
+round(pi, 4)
+```
+
+
 
 ### Installing add-in packages
 ```
