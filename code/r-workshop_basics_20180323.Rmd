@@ -62,6 +62,18 @@ round(pi, 4)
 ```
 
 
+### other types of data
+```{r}
+eyes <- c("blue", "green", "blue", "brown")
+
+happy <- c(TRUE, FALSE, TRUE, TRUE)
+
+12 < 9
+
+"ian" == "fred"
+```
+
+
 
 ### Installing add-in packages
 ```

@@ -26,7 +26,7 @@ Load in data
 ```{r}
 alien <- read_excel("aliendata_20180331.xlsx",
                     sheet = 1,
-                    na = "*")
+                    na = "-999")
 ```
 
 ## Tidy and clean data
@@ -82,11 +82,6 @@ alien <- alien %>%
                    TRUE ~ parse_number(age)))
 ```
 
-Make iron a numeric column
-```{r}
-alien <- alien %>% 
-  mutate(iron = parse_number(iron))
-```
 
 Data cleaning and tidying over (hopefully!)
 
@@ -151,4 +146,23 @@ alien %>%
 
 ## Visualisation
 
+Scatter plot
+
+```{r, fig.height=2}
+ggplot(alien, aes(x = age, y = weight, colour = sex)) +
+  geom_point()
+```
+
+Histogram
+
+```{r}
+ggplot(alien, aes(x = glucose)) +
+  geom_histogram()
+```
+
+Box and whisker plot
+
+```{r}
+ggplot(alien, aes())
+```
 

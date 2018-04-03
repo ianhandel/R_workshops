@@ -196,7 +196,7 @@ $(document).ready(function () {
 <p>To <code>rename</code> the column <code>sex (m/f)</code> to <code>sex</code> use…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">rename</span>(<span class="dt">sex =</span> <span class="st">`</span><span class="dt">sex (m/f)</span><span class="st">`</span>)</code></pre></div>
-<p>Note that the backticks `` let you choose columns that have names that would not normally be allowed in R.</p>
+<p>Note that the back ticks `` let you choose columns that have names that would not normally be allowed in R.</p>
 </div>
 <div id="separating-a-columns-into-2-or-more-new-columns" class="section level2">
 <h2>Separating a columns into 2 (or more) new columns</h2>
@@ -212,18 +212,33 @@ $(document).ready(function () {
 <p>To make a new column use <code>mutate()</code>. For example if you have a column <code>weight</code> you can add a column log_wt containing <code>log(weight)</code> like this…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">log_wt =</span> <span class="kw">log</span>(weight))</code></pre></div>
-<p>Mutate can also overwrite columns (but be carefule). So to convert height in inches to height in cm in the same column you could use…</p>
+<p>Mutate can also overwrite columns (but be careful). So to convert height in inches to height in cm in the same column you could use…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">height =</span> height <span class="op">*</span><span class="st"> </span><span class="fl">2.54</span>)</code></pre></div>
 </div>
 <div id="gathering-data-in-several-columns" class="section level2">
 <h2>Gathering data in several columns</h2>
-<p>Sometimes data at diffrent times are stored in one column per time. To convert theses into a column for meaurement time and a column for the actual data use the <code>gather</code> verb. For example if there were three columns <code>w_1</code>, <code>w_2</code> and <code>w_3</code> all holding weight data at each week these could be converted to a column for week and a column for weight…</p>
+<p>Sometimes data at different times are stored in one column per time. To convert theses into a column for measurement time and a column for the actual data use the <code>gather</code> verb. For example if there were three columns <code>w_1</code>, <code>w_2</code> and <code>w_3</code> all holding weight data at each week these could be converted to a column for week and a column for weight…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;week&quot;</span>,
          <span class="dt">value =</span> <span class="st">&quot;weight&quot;</span>,
          w_<span class="dv">1</span>, w_<span class="dv">2</span>, w_<span class="dv">3</span>)</code></pre></div>
 <p>This can be tricky at first so for more detail see R4DS (<a href="http://r4ds.had.co.nz/tidy-data.html#gathering" class="uri">http://r4ds.had.co.nz/tidy-data.html#gathering</a>)</p>
+</div>
+<div id="filtering-observations" class="section level2">
+<h2>Filtering observations</h2>
+<p>To remove (or include) observations that meet a certain criteria use filter. For example to select only the observations from mydata where colour is “blue” use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(colour <span class="op">==</span><span class="st"> &quot;blue&quot;</span>)</code></pre></div>
+<p>Note that to check if a column equals ‘something’ you use two equals <code>==</code>. You can compare numbers using <code>&gt;</code> and <code>&lt;</code>. To check if a column has values in a list use <code>%in%</code> like this…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(colour <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>))</code></pre></div>
+<p>A <code>!</code> in front of the test makes it opposite. The following keeps all the observations where the colour <strong>isn’t</strong> ‘blue’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>colour <span class="op">==</span><span class="st"> &quot;blue&quot;</span>)</code></pre></div>
+<p>Missing values in R are coded as <code>NA</code>. There’s a special function, <code>is.na()</code> to test for missing data. So the following keeps all rows where the colour <strong>isn’t</strong> missing</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(colour))</code></pre></div>
 </div>
 </div>
 

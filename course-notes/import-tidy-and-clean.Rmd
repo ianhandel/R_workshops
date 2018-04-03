@@ -1,9 +1,10 @@
 ---
 title: "Importing, tidying and cleaning data"
 output: 
-  html_document:
+  tufte::tufte_handout:
     highlight: pygments
-    css: lab.css
+
+
 ---
 
 ```{r, include=FALSE}
@@ -82,7 +83,7 @@ To `rename` the column `sex (m/f)` to `sex` use...
 mydata <- mydata %>% 
   rename(sex = `sex (m/f)`)
 ```
-Note that the backticks `` let you choose columns that have names that would not normally be allowed in R.
+Note that the back ticks `` let you choose columns that have names that would not normally be allowed in R.
 
 ## Separating a columns into 2 (or more) new columns
 
@@ -106,7 +107,7 @@ mydata <- mydata %>%
   mutate(log_wt = log(weight))
 ```
 
-Mutate can also overwrite columns (but be carefule). So to convert height in inches to height in cm in the same column you could use...
+Mutate can also overwrite columns (but be careful). So to convert height in inches to height in cm in the same column you could use...
 
 ```{r}
 mydata <- mydata %>% 
@@ -114,7 +115,7 @@ mydata <- mydata %>%
 ```
 
 ## Gathering data in several columns
-Sometimes data at diffrent times are stored in one column per time. To convert theses into a column for meaurement time and a column for the actual data use the `gather` verb. For example if there were three columns `w_1`, `w_2` and `w_3` all holding weight data at each week these could be converted to a column for week and a column for weight...
+Sometimes data at different times are stored in one column per time. To convert theses into a column for measurement time and a column for the actual data use the `gather` verb. For example if there were three columns `w_1`, `w_2` and `w_3` all holding weight data at each week these could be converted to a column for week and a column for weight...
 
 ```{r}
 mydata <- mydata %>% 
@@ -125,8 +126,32 @@ mydata <- mydata %>%
 
 This can be tricky at first so for more detail see R4DS (http://r4ds.had.co.nz/tidy-data.html#gathering)
 
+## Filtering observations
+To remove (or include) observations that meet a certain criteria use filter. For example to select only the observations from mydata where colour is "blue" use...
+```{r}
+mydata <- mydata %>% 
+  filter(colour == "blue")
+```
+Note that to check if a column equals 'something' you use two equals `==`. You can compare numbers using `>` and `<`. To check if a column has values in a  list use `%in%` like this...
 
+```{r}
+mydata <- mydata %>% 
+  filter(colour %in% c("blue", "red", "green"))
+```
 
+A `!` in front of the test makes it opposite. The following keeps all the observations where the colour **isn't** 'blue'.
+
+```{r}
+mydata <- mydata %>% 
+  filter(!colour == "blue")
+```
+
+Missing values in R are coded as `NA`. There's a special function, `is.na()` to test for missing data. So the following keeps all rows where the colour **isn't** missing
+
+```{r}
+mydata <- mydata %>% 
+  filter(!is.na(colour))
+```
 
 
 

@@ -5,8 +5,7 @@ library(writexl)
 library(here)
 library(babynames)
 
-n <- 200
-N <- 1000
+n <- 100
 n_years <- 100
 colours <- c("red", "green", "orange", "purple")
 colour_prob <- c(1, 4, 2, 6)
@@ -114,8 +113,8 @@ dat <- dat %>%
 # make some iron data 'missing'
 dat <- dat %>%
   mutate(iron = case_when(
-    runif(n(), 0, 1) > 0.95 ~ "*",
-    TRUE ~ as.character(iron)
+    runif(n(), 0, 1) > 0.95 ~ -999,
+    TRUE ~ iron
   ))
 
 # capitalise SOME colours
