@@ -116,7 +116,7 @@ Most common colour
 ```{r}
 alien %>% 
   count(colour, sort = TRUE) %>% 
-  top_n(1)
+  top_n(n = 1, wt = n)
 ```
 Most common colour in each region
 ```{r}
