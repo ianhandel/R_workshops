@@ -1,5 +1,6 @@
 ---
-title: "Importing, tidying and cleaning data"
+title: "R Workshop Notes"
+date: "2018-04-04"
 output: 
   tufte::tufte_handout:
     highlight: pygments
@@ -11,16 +12,21 @@ output:
 knitr::opts_chunk$set(eval=FALSE)
 ```
 
-These are brief notes on data import, tidying and cleaning. For much more detail and explanation see Hadley Wickham's book:
+These are brief notes on data import, tidying, cleaning, exploring and plotting. For much more detail and explanation see Hadley Wickham's book:
 `R for Data Science` (R4DS) at (http://r4ds.had.co.nz/wrangle-intro.html).
 
-# Load the tidyverse
+These notes are based on a ficitious data (mydata) so the R code won't run - but the code shows you examples you can modify to suit your datasets and variables.
 
-Before importing or tidying data run...
+# Setup
+
+Load useful packages
+
 ```{r}
-library(tidyverse)
+library(tidyverse) # all sorts of usefull stuff
+library(skimr) # for a summary of your data
+library(knitr) # we might use this for tables
+library(readxl) # this reads Excel!
 ```
-...to load the `tidyverse` set of packages first.
 
 # Importing data
 
@@ -151,6 +157,35 @@ Missing values in R are coded as `NA`. There's a special function, `is.na()` to 
 ```{r}
 mydata <- mydata %>% 
   filter(!is.na(colour))
+```
+
+# Exploring data
+
+## A quick summary
+
+Uses the `skim()` function from the `skimr` package
+
+```{r}
+skim(mydata)
+```
+
+## Count a text / categorical column
+
+To count / tally the number of obervations of each breed...
+
+```{r}
+mydata %>% 
+  count(breed)
+```
+
+## Count a text / categorical column by another one
+
+To count animals in each breed by region
+
+```{r}
+mydata %>% 
+  group_by(region) %>% 
+  count(breed)
 ```
 
 
