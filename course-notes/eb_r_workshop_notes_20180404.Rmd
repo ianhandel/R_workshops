@@ -2,26 +2,25 @@
 title: "R Workshop Notes"
 date: "2018-04-04"
 output: 
-  tufte::tufte_handout:
+  tufte::tufte_html:
+    tufte_variant: "envisioned"
     highlight: pygments
+    css: lab.css
+    
 
 
 ---
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(eval=FALSE)
-```
-
 These are brief notes on data import, tidying, cleaning, exploring and plotting. For much more detail and explanation see Hadley Wickham's book:
 `R for Data Science` (R4DS) at (http://r4ds.had.co.nz/wrangle-intro.html).
 
-These notes are based on a ficitious data (mydata) so the R code won't run - but the code shows you examples you can modify to suit your datasets and variables.
+The import and cleaning code is based on a ficitious data (mydata) so the R code won't run - but the code shows you examples you can modify to suit your datasets and variables.
 
 # Setup
 
 Load useful packages
 
-```{r}
+```{r, eval = FALSE}
 library(tidyverse) # all sorts of usefull stuff
 library(skimr) # for a summary of your data
 library(knitr) # we might use this for tables
@@ -40,7 +39,7 @@ library(readxl)
 
 Then to read a sheet called "my-sheet-name-or-number" from an Excel workbook called "my-excel-file.xls", skipping the first 5 rows, into an R object called mydata use... 
 
-```{r}
+```{r, eval = FALSE}
 mydata <- read_excel("my-excel-file.xls",
                  sheet = "my-sheet-name-or-number",
                  skip = 5)
@@ -52,7 +51,7 @@ Use the `read_csv()` function from the `readr` package. This is loaded automatic
 
 To read a csv file called "my-csv-file.csv" which includes a header row into a new R object called mydata use...
 
-```{r}
+```{r, eval = FALSE}
 mydat <- read_csv("my-csv-file.csv")
 ```
 
@@ -61,7 +60,7 @@ mydat <- read_csv("my-csv-file.csv")
 ## Filling down blanks
 To fill down any blank cells in the `patient` and `breed` columns of `mydata` use...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   fill(patient, breed)
 ```
@@ -70,14 +69,14 @@ mydata <- mydata %>%
 
 The `select` verb lets you choose or remove columns. To remove the name column from mydata use...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   select(-name)
 ```
 
 To just select `subject` and all columns between `age` and `glucose` in mydata use...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   select(subject, age:glucose)
 ```
@@ -85,7 +84,7 @@ mydata <- mydata %>%
 ## Renaming columns
 
 To `rename` the column `sex (m/f)` to `sex` use...
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   rename(sex = `sex (m/f)`)
 ```
@@ -95,7 +94,7 @@ Note that the back ticks `` let you choose columns that have names that would no
 
 A column that contains data that should be in two separate columns can be split using `separate()`. To split a column called `sex_status` into two columns, `sex` and `status` using `_` as a separator use...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   separate(sex_status,
            into = c("sex", "status"),
@@ -108,14 +107,14 @@ This would split "male_neutered" in one column into "male" and "neutered" in two
 
 To make a new column use `mutate()`. For example if you have a column `weight` you can add a column log_wt containing `log(weight)` like this...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   mutate(log_wt = log(weight))
 ```
 
 Mutate can also overwrite columns (but be careful). So to convert height in inches to height in cm in the same column you could use...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   mutate(height = height * 2.54)
 ```
@@ -123,7 +122,7 @@ mydata <- mydata %>%
 ## Gathering data in several columns
 Sometimes data at different times are stored in one column per time. To convert theses into a column for measurement time and a column for the actual data use the `gather` verb. For example if there were three columns `w_1`, `w_2` and `w_3` all holding weight data at each week these could be converted to a column for week and a column for weight...
 
-```{r}
+```{r, eval = FALSE}
 mydata <- mydata %>% 
   gather(key = "week",
          value = "weight",
@@ -132,63 +131,103 @@ mydata <- mydata %>%
 
 This can be tricky at first so for more detail see R4DS (http://r4ds.had.co.nz/tidy-data.html#gathering)
 
-## Filtering observations
-To remove (or include) observations that meet a certain criteria use filter. For example to select only the observations from mydata where colour is "blue" use...
-```{r}
-mydata <- mydata %>% 
-  filter(colour == "blue")
+
+
+# Exploring  and manipulating data
+
+For the following examples we'll use the `mpg` dataset that comes with the tidyverse. It describes performance data on some cars. The following code chunks should run (as long as the tidyverse and skimr packages are loaded...)
+
+```{r, include = FALSE}
+library(tidyverse) # all sorts of usefull stuff
+library(skimr) # for a summary of your data
 ```
-Note that to check if a column equals 'something' you use two equals `==`. You can compare numbers using `>` and `<`. To check if a column has values in a  list use `%in%` like this...
-
-```{r}
-mydata <- mydata %>% 
-  filter(colour %in% c("blue", "red", "green"))
+```{r, eval = FALSE}
+library(tidyverse) # all sorts of usefull stuff
+library(skimr) # for a summary of your data
 ```
-
-A `!` in front of the test makes it opposite. The following keeps all the observations where the colour **isn't** 'blue'.
-
-```{r}
-mydata <- mydata %>% 
-  filter(!colour == "blue")
-```
-
-Missing values in R are coded as `NA`. There's a special function, `is.na()` to test for missing data. So the following keeps all rows where the colour **isn't** missing
-
-```{r}
-mydata <- mydata %>% 
-  filter(!is.na(colour))
-```
-
-# Exploring data
 
 ## A quick summary
 
 Uses the `skim()` function from the `skimr` package
 
 ```{r}
-skim(mydata)
+skim(mpg)
 ```
 
 ## Count a text / categorical column
 
-To count / tally the number of obervations of each breed...
+To count / tally the number of cars of each manufacturer
 
 ```{r}
-mydata %>% 
-  count(breed)
+mpg %>% 
+  count(manufacturer)
+```
+
+## Do that again but sort it
+
+```{r}
+mpg %>% 
+  count(manufacturer, sort = TRUE)
 ```
 
 ## Count a text / categorical column by another one
 
-To count animals in each breed by region
+To count drive system by year (drive systems are forward, rear and 4x4)
 
 ```{r}
-mydata %>% 
-  group_by(region) %>% 
-  count(breed)
+mpg %>% 
+  group_by(year) %>% 
+  count(drv)
 ```
 
+## To calculate the mean and median engine sizes
 
+The `summarise` verb/function reduces a dataframe down to summary columns. The `na.rm = TRUE` argument in the statistics functions tells them to ignore missing values (NA's in R).
 
+```{r}
+mpg %>% 
+  summarise(mean_displacement = mean(displ, na.rm = TRUE),
+            median_displacement = median(displ, na.rm = TRUE))
+  
+```
+
+We can extend that code to look at engine size by year.
+
+```{r}
+mpg %>%
+  group_by(year) %>% 
+  summarise(mean_displacement = mean(displ, na.rm = TRUE),
+            median_displacement = median(displ, na.rm = TRUE))
+  
+```
+
+Engines look to be getting bigger!
+
+## Filtering observations
+To remove (or include) observations that meet a certain criteria use filter. For example to select only the observations from mydata where drive is 4x4
+```{r}
+mpg %>% 
+  filter(drv == "4")
+```
+Note that to check if a column equals 'something' you use two equals `==`. You can compare numbers using `>` and `<`. To check if a column has values in a  list use `%in%` like this...
+
+```{r}
+mpg %>% 
+  filter(model %in% c("A4", "civic"))
+```
+
+A `!` in front of the test makes it opposite. The following keeps all the observations where the colour **isn't** 'blue'.
+
+```{r}
+mpg %>% 
+  filter(!model == "a4")
+```
+
+Missing values in R are coded as `NA`. There's a special function, `is.na()` to test for missing data. So the following keeps all rows where the colour **isn't** missing
+
+```{r}
+mpg %>% 
+  filter(!is.na(model))
+```
 
 

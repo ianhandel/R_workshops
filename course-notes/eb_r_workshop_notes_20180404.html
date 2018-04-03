@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2018-04-04" />
+
+<title>R Workshop Notes</title>
+
+<link href="data:text/css;charset=utf-8,%0A%40charset%20%22UTF%2D8%22%3B%0A%0Ahtml%20%7B%20font%2Dsize%3A%2015px%3B%20%7D%0Abody%20%7B%20width%3A%2087%2E5%25%3B%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0Apadding%2Dleft%3A%2012%2E5%25%3B%0Acolor%3A%20%23111%3B%0Amax%2Dwidth%3A%201400px%3B%0Acounter%2Dreset%3A%20sidenote%2Dcounter%3B%20%7D%0Ah1%2Etitle%20%7B%20font%2Dweight%3A%20400%3B%0Afont%2Dstyle%3A%20normal%3B%0Amargin%2Dtop%3A%204rem%3B%0Amargin%2Dbottom%3A%201%2E5rem%3B%0Afont%2Dsize%3A%203%2E2rem%3B%0Aline%2Dheight%3A%201%3B%20%7D%0Ah1%20%7B%0Afont%2Dweight%3A%20400%3B%0Amargin%2Dtop%3A%202%2E1rem%3B%0Amargin%2Dbottom%3A%200%3B%0Afont%2Dsize%3A%202%2E2rem%3B%0Aline%2Dheight%3A%201%3B%20%7D%0Ah2%20%7B%0Afont%2Dweight%3A%20400%3B%0Afont%2Dsize%3A%201%2E7rem%3B%0Amargin%2Dtop%3A%202rem%3B%0Amargin%2Dbottom%3A%200%3B%0Aline%2Dheight%3A%201%3B%20%7D%0Ah3%2Esubtitle%20%7B%0Afont%2Dweight%3A%20400%3B%0Amargin%2Dtop%3A%201rem%3B%0Amargin%2Dbottom%3A%201rem%3B%0Afont%2Dsize%3A%201%2E8rem%3B%0Adisplay%3A%20block%3B%0Aline%2Dheight%3A%201%3B%20%7D%0Ah4%2Eauthor%2C%20h4%2Edate%20%7B%0Afont%2Dsize%3A%201%2E4rem%3B%0Afont%2Dweight%3A%20400%3B%0Amargin%3A%201rem%20auto%3B%0Aline%2Dheight%3A%201%3B%0A%7D%0A%2Edanger%20%7B%20color%3A%20red%3B%20%7D%0Aarticle%20%7B%20position%3A%20relative%3B%0Apadding%3A%205rem%200rem%3B%20%7D%0Asection%20%7B%20padding%2Dtop%3A%201rem%3B%0Apadding%2Dbottom%3A%201rem%3B%20%7D%0Ap%2C%20ol%2C%20ul%20%7B%20font%2Dsize%3A%201%2E4rem%3B%20%7D%0Ap%20%7B%20line%2Dheight%3A%202rem%3B%0Amargin%2Dtop%3A%201%2E4rem%3B%0Amargin%2Dbottom%3A%201%2E4rem%3B%0Apadding%2Dright%3A%200%3B%0Avertical%2Dalign%3A%20baseline%3B%20%7D%0Ablockquote%20%7B%20font%2Dsize%3A%201%2E4rem%3B%20%7D%0Ablockquote%20p%20%7B%20width%3A%2050%25%3B%20%7D%0Ablockquote%20footer%20%7B%20width%3A%2050%25%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0Atext%2Dalign%3A%20right%3B%20%7D%0Aol%2C%20ul%20%7B%20width%3A%2045%25%3B%0A%2Dwebkit%2Dpadding%2Dstart%3A%205%25%3B%0A%2Dwebkit%2Dpadding%2Dend%3A%205%25%3B%20%7D%0Ali%20%7B%20padding%3A%200%2E5rem%200%3B%20%7D%0Atable%20%7B%0Aborder%2Dtop%3A%202px%20solid%20%23111%3B%0Aborder%2Dbottom%3A%202px%20solid%20%23111%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0A%7D%0Ath%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23111%3B%0A%7D%0Adiv%2Efigure%20%7B%0Apadding%3A%200%3B%0Aborder%3A%200%3B%0Afont%2Dsize%3A%20100%25%3B%0Afont%3A%20inherit%3B%0Avertical%2Dalign%3A%20baseline%3B%0Amax%2Dwidth%3A%2055%25%3B%0A%2Dwebkit%2Dmargin%2Dstart%3A%200%3B%0A%2Dwebkit%2Dmargin%2Dend%3A%200%3B%0Amargin%3A%200%200%203em%200%3B%0A%7D%0A%0Aa%3Alink%2C%20a%3Avisited%20%7B%20color%3A%20inherit%3B%20%7D%0Aa%3Alink%20%7B%20text%2Ddecoration%3A%20none%3B%0Abackground%3A%20%2Dwebkit%2Dlinear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20%2Dwebkit%2Dlinear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20%2Dwebkit%2Dlinear%2Dgradient%28%23333%2C%20%23333%29%3B%0Abackground%3A%20linear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20linear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20linear%2Dgradient%28%23333%2C%20%23333%29%3B%0A%2Dwebkit%2Dbackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0A%2Dmoz%2Dbackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0Abackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0Abackground%2Drepeat%3A%20no%2Drepeat%2C%20no%2Drepeat%2C%20repeat%2Dx%3B%0Atext%2Dshadow%3A%200%2E03em%200%20%23fffff8%2C%20%2D0%2E03em%200%20%23fffff8%2C%200%200%2E03em%20%23fffff8%2C%200%20%2D0%2E03em%20%23fffff8%2C%200%2E06em%200%20%23fffff8%2C%20%2D0%2E06em%200%20%23fffff8%2C%200%2E09em%200%20%23fffff8%2C%20%2D0%2E09em%200%20%23fffff8%2C%200%2E12em%200%20%23fffff8%2C%20%2D0%2E12em%200%20%23fffff8%2C%200%2E15em%200%20%23fffff8%2C%20%2D0%2E15em%200%20%23fffff8%3B%0Abackground%2Dposition%3A%200%25%2093%25%2C%20100%25%2093%25%2C%200%25%2093%25%3B%20%7D%0A%40media%20screen%20and%20%28%2Dwebkit%2Dmin%2Ddevice%2Dpixel%2Dratio%3A%200%29%20%7B%20a%3Alink%20%7B%20background%2Dposition%2Dy%3A%2087%25%2C%2087%25%2C%2087%25%3B%20%7D%20%7D%0Aa%3Alink%3A%3Aselection%20%7B%20text%2Dshadow%3A%200%2E03em%200%20%23b4d5fe%2C%20%2D0%2E03em%200%20%23b4d5fe%2C%200%200%2E03em%20%23b4d5fe%2C%200%20%2D0%2E03em%20%23b4d5fe%2C%200%2E06em%200%20%23b4d5fe%2C%20%2D0%2E06em%200%20%23b4d5fe%2C%200%2E09em%200%20%23b4d5fe%2C%20%2D0%2E09em%200%20%23b4d5fe%2C%200%2E12em%200%20%23b4d5fe%2C%20%2D0%2E12em%200%20%23b4d5fe%2C%200%2E15em%200%20%23b4d5fe%2C%20%2D0%2E15em%200%20%23b4d5fe%3B%0Abackground%3A%20%23b4d5fe%3B%20%7D%0Aa%3Alink%3A%3A%2Dmoz%2Dselection%20%7B%20text%2Dshadow%3A%200%2E03em%200%20%23b4d5fe%2C%20%2D0%2E03em%200%20%23b4d5fe%2C%200%200%2E03em%20%23b4d5fe%2C%200%20%2D0%2E03em%20%23b4d5fe%2C%200%2E06em%200%20%23b4d5fe%2C%20%2D0%2E06em%200%20%23b4d5fe%2C%200%2E09em%200%20%23b4d5fe%2C%20%2D0%2E09em%200%20%23b4d5fe%2C%200%2E12em%200%20%23b4d5fe%2C%20%2D0%2E12em%200%20%23b4d5fe%2C%200%2E15em%200%20%23b4d5fe%2C%20%2D0%2E15em%200%20%23b4d5fe%3B%0Abackground%3A%20%23b4d5fe%3B%20%7D%0A%0Aimg%20%7Bmax%2Dwidth%3A%20100%25%3B%7D%0A%2Emarginnote%20img%20%7B%20display%3A%20block%3B%20%7D%0A%2Esidenote%2C%20%2Emarginnote%20%7B%20float%3A%20right%3B%0Aclear%3A%20right%3B%0Amargin%2Dright%3A%20%2D60%25%3B%0Awidth%3A%2050%25%3B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%201rem%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0Aline%2Dheight%3A%201%2E3%3B%0Avertical%2Dalign%3A%20baseline%3B%0Aposition%3A%20relative%3B%20%7D%0A%2Esidenote%2Dnumber%20%7B%0Aposition%3A%20relative%3B%0Avertical%2Dalign%3A%20baseline%3B%20%7D%0A%2Esidenote%2Dnumber%20%7B%20font%2Dsize%3A%201rem%3B%0Atop%3A%20%2D0%2E5rem%3B%0Aleft%3A%200%2E1rem%3B%20%7D%0Ap%2C%20footer%2C%20table%2C%20hr%20%7B%20width%3A%2055%25%3B%20%7D%0Ahr%20%7B%20margin%2Dleft%3A%200%3B%20%7D%0Atable%20table%2C%20li%20p%2C%20li%20pre%20%7B%20width%3A%20auto%3B%20%7D%0Ali%20p%2C%20li%20pre%20%7Bmargin%2Dtop%3A%20auto%3B%20%7D%0Adiv%2Efullwidth%2C%20table%2Efullwidth%20%7B%20max%2Dwidth%3A%2090%25%3B%20%7D%0A%23TOC%2C%20h1%2Etitle%20%7B%20max%2Dwidth%3A%2090%25%3B%20%7D%0A%23TOC%20ol%2C%20%23TOC%20ul%20%7B%20width%3A%20auto%3B%20%7D%0Adiv%2Efullwidth%20p%2Ecaption%20%7B%0Amargin%2Dright%3A%200%3B%0Amax%2Dwidth%3A%2033%25%3B%0A%7D%0Ap%2Ecaption%20%7B%20text%2Dalign%3A%20left%3B%20%7D%0A%40media%20screen%20and%20%28max%2Dwidth%3A%20760px%29%20%7B%20p%2C%20footer%2C%20ol%2C%20ul%2C%20table%2C%20hr%20%7B%20width%3A%2090%25%3B%20%7D%0Apre%20%7B%20width%3A%2087%2E5%25%3B%20%7D%0Aul%20%7B%20width%3A%2085%25%3B%20%7D%0Afigure%20%7B%20max%2Dwidth%3A%2090%25%3B%20%7D%0Adiv%2Efullwidth%20p%2Ecaption%20%7B%20max%2Dwidth%3A%20none%3B%20%7D%0Ablockquote%20p%2C%20blockquote%20footer%20%7B%20width%3A%2090%25%3B%20%7D%7D%0A%2Esans%20%7B%20font%2Dfamily%3A%20%22Gill%20Sans%22%2C%20%22Gill%20Sans%20MT%22%2C%20Calibri%2C%20sans%2Dserif%3B%0Aletter%2Dspacing%3A%20%2E03em%3B%20%7D%0Acode%20%7B%20font%2Dfamily%3A%20Consolas%2C%20%22Liberation%20Mono%22%2C%20Menlo%2C%20Courier%2C%20monospace%3B%0Afont%2Dsize%3A%201%2E125rem%3B%0Aline%2Dheight%3A%201%2E6%3B%20%7D%0Apre%20code%20%7B%20font%2Dsize%3A%201rem%3B%20%7D%0Ap%20code%20%7B%20white%2Dspace%3A%20inherit%3B%20%7D%0Ah1%20code%2C%20h2%20code%2C%20h3%20code%20%7B%20font%2Dsize%3A%200%2E80em%3B%20%7D%0A%2Emarginnote%20code%2C%20%2Esidenote%20code%20%7B%20font%2Dsize%3A%201rem%3B%20%7D%0Apre%20%7B%20width%3A%2052%2E5%25%3B%0Aoverflow%2Dx%3A%20auto%3B%20%7D%0A%2Efullwidth%20%7B%20max%2Dwidth%3A%2090%25%3B%0Aclear%3Aboth%3B%20%7D%0Aspan%2Enewthought%20%7B%20font%2Dvariant%3A%20small%2Dcaps%3B%0Afont%2Dsize%3A%201%2E2em%3B%20%7D%0Ainput%2Emargin%2Dtoggle%20%7B%20display%3A%20none%3B%20%7D%0Alabel%2Esidenote%2Dnumber%20%7B%20display%3A%20inline%3B%20%7D%0Alabel%2Emargin%2Dtoggle%3Anot%28%2Esidenote%2Dnumber%29%20%7B%20display%3A%20none%3B%20%7D%0A%40media%20%28max%2Dwidth%3A%20760px%29%20%7B%20label%2Emargin%2Dtoggle%3Anot%28%2Esidenote%2Dnumber%29%20%7B%20display%3A%20inline%3B%20%7D%0A%2Esidenote%2C%20%2Emarginnote%20%7B%20display%3A%20none%3B%20%7D%0A%2Eshownote%2C%0A%2Emargin%2Dtoggle%3Achecked%20%2B%20%2Esidenote%2C%0A%2Emargin%2Dtoggle%3Achecked%20%2B%20%2Emarginnote%20%7B%0Adisplay%3A%20block%3B%0Afloat%3A%20left%3B%0Aleft%3A%201rem%3B%0Aclear%3A%20both%3B%0Awidth%3A%2095%25%3B%0Amargin%3A%201rem%202%2E5%25%3B%0Avertical%2Dalign%3A%20baseline%3B%0Aposition%3A%20relative%3B%0A%7D%0Alabel%20%7B%20cursor%3A%20pointer%3B%20%7D%0Adiv%2Efigure%20%7B%20max%2Dwidth%3A%2090%25%3B%20%7D%0Apre%20%7B%20width%3A%2090%25%3B%0Apadding%3A%200%3B%20%7D%0A%7D%0A" rel="stylesheet" />
+<link href="data:text/css;charset=utf-8,%40import%20%27https%3A%2F%2Ffonts%2Egoogleapis%2Ecom%2Fcss%3Ffamily%3DRoboto%2BCondensed%27%3B%0Abody%20%7B%0Afont%2Dfamily%3A%20%27Roboto%20Condensed%27%2C%20Arial%2C%20Helvetica%2C%20sans%2Dserif%3B%0Abackground%2Dcolor%3A%20%23fefefe%3B%0Acolor%3A%20%23222%3B%0A%7D%0A%2Enumeral%2C%20%2Esidenote%2Dnumber%20%7B%20font%2Dfamily%3A%20%22Roboto%20Condensed%22%3B%20%7D%0A" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,%0A%40import%20%27https%3A%2F%2Ffonts%2Egoogleapis%2Ecom%2Fcss%3Ffamily%3DSource%2BSans%2BPro%3A300%2C400%2C600%2C700%27%3B%0A%40import%20%27https%3A%2F%2Ffonts%2Egoogleapis%2Ecom%2Fcss%3Ffamily%3DSource%2BCode%2BPro%27%3B%0A%40charset%20%22UTF%2D8%22%3B%0A%0Ahtml%20%7B%0Afont%2Dsize%3A%2012px%3B%0A%7D%0Abody%20%7B%0Awidth%3A%2087%2E5%25%3B%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0Apadding%2Dleft%3A%2012%2E5%25%3B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Afont%2Dweight%3A%20300%3B%0Abackground%2Dcolor%3A%20%23fefefe%3B%0Acolor%3A%20%23222%3B%0Amax%2Dwidth%3A%201400px%3B%0Acounter%2Dreset%3A%20li%3B%0A%7D%0Ah1%2Etitle%20%7B%0Afont%2Dweight%3A%20700%3B%0Afont%2Dstyle%3A%20normal%3B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Amargin%2Dtop%3A%204rem%3B%0Amargin%2Dbottom%3A%201%2E5rem%3B%0Afont%2Dsize%3A%203%2E2rem%3B%0Aline%2Dheight%3A%201%3B%0Acolor%3A%20%236CA0DC%3B%0A%7D%0Ah1%20%7B%0Afont%2Dstyle%3A%20normal%3B%0Afont%2Dweight%3A%20400%3B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Amargin%2Dtop%3A%202%2E1rem%3B%0Amargin%2Dbottom%3A%200%3B%0Afont%2Dsize%3A%202%2E2rem%3B%0Aline%2Dheight%3A%201%3B%0Acolor%3A%20%236CA0DC%3B%0A%7D%0Ah2%20%7B%0Afont%2Dstyle%3A%20normal%3B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Afont%2Dweight%3A%20400%3B%0Afont%2Dsize%3A%201%2E7rem%3B%0Amargin%2Dtop%3A%202rem%3B%0Amargin%2Dbottom%3A%200%3B%0Aline%2Dheight%3A%201%3B%0Acolor%3A%20%236CA0DC%3B%0A%7D%0Ah3%2Esubtitle%20%7B%0Afont%2Dstyle%3A%20normal%3B%0Afont%2Dweight%3A%20400%3B%0Amargin%2Dtop%3A%201rem%3B%0Amargin%2Dbottom%3A%201rem%3B%0Afont%2Dsize%3A%201%2E8rem%3B%0Adisplay%3A%20block%3B%0Aline%2Dheight%3A%201%3B%0Acolor%3A%20%236CA0DC%3B%0A%7D%0Ah4%20%7B%0Afont%2Dstyle%3A%20normal%3B%0Afont%2Dweight%3A%20400%3B%0Afont%2Dsize%3A%201%2E4rem%3B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Amargin%2Dtop%3A%201%2E5rem%3B%0Amargin%2Dbottom%3A%200%3B%0Aline%2Dheight%3A%201%3B%0A%7D%0Ah4%2Eauthor%2C%0Ah4%2Edate%20%7B%0Afont%2Dfamily%3A%20%27Source%20Sans%20Pro%27%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%201%2E4rem%3B%0Afont%2Dweight%3A%20300%3B%0Amargin%3A%201rem%20auto%3B%0Aline%2Dheight%3A%201%3B%0A%7D%0A%2Enumeral%20%7B%0Afont%2Dfamily%3A%20%22Source%20Sans%20Pro%22%3B%0Afont%2Dweight%3A%20300%3B%0A%7D%0A%2Edanger%20%7B%0Acolor%3A%20red%3B%0A%7D%0Aarticle%20%7B%0Aposition%3A%20relative%3B%0Apadding%3A%205rem%200rem%3B%0A%7D%0Asection%20%7B%0Apadding%2Dtop%3A%201rem%3B%0Apadding%2Dbottom%3A%201rem%3B%0A%7D%0Ap%2C%0Aol%2C%0Aul%20%7B%0Afont%2Dsize%3A%201%2E4rem%3B%0A%7D%0Ap%20%7B%0Aline%2Dheight%3A%202rem%3B%0Amargin%2Dtop%3A%201%2E4rem%3B%0Amargin%2Dbottom%3A%201%2E4rem%3B%0Apadding%2Dright%3A%200%3B%0Avertical%2Dalign%3A%20baseline%3B%0A%7D%0Aem%20%7B%0Afont%2Dstyle%3A%20italic%3B%0Afont%2Dweight%3A%20300%3B%0Afont%2Dfamily%3A%20%22Source%20Sans%20Pro%22%3B%0A%7D%0Astrong%20%7B%0Afont%2Dstyle%3A%20bold%3B%0Afont%2Dweight%3A%20600%3B%0Afont%2Dfamily%3A%20%22Source%20Sans%20Pro%22%3B%0A%7D%0Ablockquote%20%7B%0Afont%2Dsize%3A%201%2E4rem%3B%0A%7D%0Ablockquote%20p%20%7B%0Awidth%3A%2050%25%3B%0A%7D%0Ablockquote%20footer%20%7B%0Awidth%3A%2050%25%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0Atext%2Dalign%3A%20right%3B%0A%7D%0Aol%2C%0Aul%20%7B%0Awidth%3A%2045%25%3B%0A%2Dwebkit%2Dpadding%2Dstart%3A%205%25%3B%0A%2Dwebkit%2Dpadding%2Dend%3A%205%25%3B%0A%7D%0Ali%20%7B%0Apadding%3A%200%2E5rem%200%3B%0A%7D%0Atable%20%7B%0Aborder%2Dtop%3A%202px%20solid%20%23111%3B%0Aborder%2Dbottom%3A%202px%20solid%20%23111%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0A%7D%0Ath%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23111%3B%0A%7D%0Adiv%2Efigure%20%7B%0Apadding%3A%200%3B%0Aborder%3A%200%3B%0Afont%2Dsize%3A%20100%25%3B%0Afont%3A%20inherit%3B%0Avertical%2Dalign%3A%20baseline%3B%0Amax%2Dwidth%3A%2055%25%3B%0A%2Dwebkit%2Dmargin%2Dstart%3A%200%3B%0A%2Dwebkit%2Dmargin%2Dend%3A%200%3B%0Amargin%3A%200%200%203em%200%3B%0A%7D%0A%0Aa%3Alink%2C%0Aa%3Avisited%20%7B%0Acolor%3A%20inherit%3B%0A%7D%0Aa%3Alink%20%7B%0Atext%2Ddecoration%3A%20none%3B%0Abackground%3A%20%2Dwebkit%2Dlinear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20%2Dwebkit%2Dlinear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20%2Dwebkit%2Dlinear%2Dgradient%28%23333%2C%20%23333%29%3B%0Abackground%3A%20linear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20linear%2Dgradient%28%23fffff8%2C%20%23fffff8%29%2C%20linear%2Dgradient%28%23333%2C%20%23333%29%3B%0A%2Dwebkit%2Dbackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0A%2Dmoz%2Dbackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0Abackground%2Dsize%3A%200%2E05em%201px%2C%200%2E05em%201px%2C%201px%201px%3B%0Abackground%2Drepeat%3A%20no%2Drepeat%2C%20no%2Drepeat%2C%20repeat%2Dx%3B%0Atext%2Dshadow%3A%200%2E03em%200%20%23fffff8%2C%20%2D0%2E03em%200%20%23fffff8%2C%200%200%2E03em%20%23fffff8%2C%200%20%2D0%2E03em%20%23fffff8%2C%200%2E06em%200%20%23fffff8%2C%20%2D0%2E06em%200%20%23fffff8%2C%200%2E09em%200%20%23fffff8%2C%20%2D0%2E09em%200%20%23fffff8%2C%200%2E12em%200%20%23fffff8%2C%20%2D0%2E12em%200%20%23fffff8%2C%200%2E15em%200%20%23fffff8%2C%20%2D0%2E15em%200%20%23fffff8%3B%0Abackground%2Dposition%3A%200%25%2093%25%2C%20100%25%2093%25%2C%200%25%2093%25%3B%0A%7D%0A%40media%20screen%20and%20%28%2Dwebkit%2Dmin%2Ddevice%2Dpixel%2Dratio%3A%200%29%20%7B%0Aa%3Alink%20%7B%0Abackground%2Dposition%2Dy%3A%2087%25%2C%2087%25%2C%2087%25%3B%0A%7D%0A%7D%0Aa%3Alink%3A%3Aselection%20%7B%0Atext%2Dshadow%3A%200%2E03em%200%20%23b4d5fe%2C%20%2D0%2E03em%200%20%23b4d5fe%2C%200%200%2E03em%20%23b4d5fe%2C%200%20%2D0%2E03em%20%23b4d5fe%2C%200%2E06em%200%20%23b4d5fe%2C%20%2D0%2E06em%200%20%23b4d5fe%2C%200%2E09em%200%20%23b4d5fe%2C%20%2D0%2E09em%200%20%23b4d5fe%2C%200%2E12em%200%20%23b4d5fe%2C%20%2D0%2E12em%200%20%23b4d5fe%2C%200%2E15em%200%20%23b4d5fe%2C%20%2D0%2E15em%200%20%23b4d5fe%3B%0Abackground%3A%20%23b4d5fe%3B%0A%7D%0Aa%3Alink%3A%3A%2Dmoz%2Dselection%20%7B%0Atext%2Dshadow%3A%200%2E03em%200%20%23b4d5fe%2C%20%2D0%2E03em%200%20%23b4d5fe%2C%200%200%2E03em%20%23b4d5fe%2C%200%20%2D0%2E03em%20%23b4d5fe%2C%200%2E06em%200%20%23b4d5fe%2C%20%2D0%2E06em%200%20%23b4d5fe%2C%200%2E09em%200%20%23b4d5fe%2C%20%2D0%2E09em%200%20%23b4d5fe%2C%200%2E12em%200%20%23b4d5fe%2C%20%2D0%2E12em%200%20%23b4d5fe%2C%200%2E15em%200%20%23b4d5fe%2C%20%2D0%2E15em%200%20%23b4d5fe%3B%0Abackground%3A%20%23b4d5fe%3B%0A%7D%0A%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0A%2Emarginnote%20img%20%7B%0Adisplay%3A%20block%3B%0A%7D%0A%2Esidenote%2C%0A%2Emarginnote%20%7B%0Afloat%3A%20right%3B%0Aclear%3A%20right%3B%0Amargin%2Dright%3A%20%2D60%25%3B%0Awidth%3A%2050%25%3B%0Amargin%2Dtop%3A%200%3B%0Amargin%2Dbottom%3A%201rem%3B%0Afont%2Dsize%3A%201%2E1rem%3B%0Aline%2Dheight%3A%201%2E3%3B%0Avertical%2Dalign%3A%20baseline%3B%0Aposition%3A%20relative%3B%0A%7D%0A%2Esidenote%2Dnumber%20%7B%0Afont%2Dfamily%3A%20%22Source%20Sans%20Pro%20Bold%22%3B%0Aposition%3A%20relative%3B%0Avertical%2Dalign%3A%20baseline%3B%0A%7D%0A%2Esidenote%2Dnumber%20%7B%0Afont%2Dsize%3A%201rem%3B%0Atop%3A%20%2D0%2E5rem%3B%0Aleft%3A%200%2E1rem%3B%0A%7D%0Ap%2C%0Afooter%2C%0Atable%20%7B%0Awidth%3A%2055%25%3B%0A%7D%0Atable%20table%2C%0Ali%20p%2C%0Ali%20pre%20%7B%0Awidth%3A%20auto%3B%0A%7D%0Ali%20p%2C%0Ali%20pre%20%7B%0Amargin%2Dtop%3A%20auto%3B%0A%7D%0Adiv%2Efullwidth%2C%0Atable%2Efullwidth%20%7B%0Amax%2Dwidth%3A%2090%25%3B%0A%7D%0A%23TOC%2C%0Ah1%2Etitle%20%7B%0Amax%2Dwidth%3A%2090%25%3B%0A%7D%0A%23TOC%20ol%2C%0A%23TOC%20ul%20%7B%0Awidth%3A%20auto%3B%0A%7D%0Adiv%2Efullwidth%20p%2Ecaption%20%7B%0Amargin%2Dright%3A%200%3B%0Amax%2Dwidth%3A%2033%25%3B%0A%7D%0Ap%2Ecaption%20%7B%0Atext%2Dalign%3A%20left%3B%0A%7D%0A%40media%20screen%20and%20%28max%2Dwidth%3A%20760px%29%20%7B%0Ap%2C%0Afooter%2C%0Aol%2C%0Aul%2C%0Atable%20%7B%0Awidth%3A%2090%25%3B%0A%7D%0Apre%20%7B%0Awidth%3A%20100%25%3B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0Aul%20%7B%0Awidth%3A%2085%25%3B%0A%7D%0Afigure%20%7B%0Amax%2Dwidth%3A%2090%25%3B%0A%7D%0Adiv%2Efullwidth%20p%2Ecaption%20%7B%0Amax%2Dwidth%3A%20none%3B%0A%7D%0Ablockquote%20p%2C%0Ablockquote%20footer%20%7B%0Awidth%3A%2090%25%3B%0A%7D%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20%27Source%20Code%20Pro%27%2C%20Consolas%2C%20%22Liberation%20Mono%22%2C%20Menlo%2C%20Courier%2C%20monospace%3B%0Afont%2Dsize%3A%2015px%3B%0Aline%2Dheight%3A%201%2E6%3B%0A%7D%0Apre%20code%20%7B%0Afont%2Dsize%3A%2015px%3B%0A%7D%0Ap%20code%20%7B%0Awhite%2Dspace%3A%20inherit%3B%0A%7D%0Ah1%20code%2C%0Ah2%20code%2C%0Ah3%20code%20%7B%0Afont%2Dsize%3A%200%2E80em%3B%0A%7D%0A%2Emarginnote%20code%2C%0A%2Esidenote%20code%20%7B%0Afont%2Dsize%3A%201rem%3B%0A%7D%0Apre%20%7B%0Awidth%3A%20100%25%3B%0Afont%2Dsize%3A%2016px%3B%0Aoverflow%2Dx%3A%20auto%3B%0A%7D%0A%2Efullwidth%20%7B%0Amax%2Dwidth%3A%2090%25%3B%0Aclear%3A%20both%3B%0A%7D%0Aspan%2Enewthought%20%7B%0Afont%2Dvariant%3A%20small%2Dcaps%3B%0Afont%2Dsize%3A%201%2E2em%3B%0A%7D%0Ainput%2Emargin%2Dtoggle%20%7B%0Adisplay%3A%20none%3B%0A%7D%0Alabel%2Esidenote%2Dnumber%20%7B%0Adisplay%3A%20inline%3B%0A%7D%0Alabel%2Emargin%2Dtoggle%3Anot%28%2Esidenote%2Dnumber%29%20%7B%0Adisplay%3A%20none%3B%0A%7D%0A%40media%20%28max%2Dwidth%3A%20760px%29%20%7B%0Alabel%2Emargin%2Dtoggle%3Anot%28%2Esidenote%2Dnumber%29%20%7B%0Adisplay%3A%20inline%3B%0A%7D%0A%2Esidenote%2C%0A%2Emarginnote%20%7B%0Adisplay%3A%20none%3B%0A%7D%0A%2Eshownote%2C%0A%2Emargin%2Dtoggle%3Achecked%2B%2Esidenote%2C%0A%2Emargin%2Dtoggle%3Achecked%2B%2Emarginnote%20%7B%0Adisplay%3A%20block%3B%0Afloat%3A%20left%3B%0Aleft%3A%201rem%3B%0Aclear%3A%20both%3B%0Awidth%3A%2095%25%3B%0Amargin%3A%201rem%202%2E5%25%3B%0Avertical%2Dalign%3A%20baseline%3B%0Aposition%3A%20relative%3B%0A%7D%0Alabel%20%7B%0Acursor%3A%20pointer%3B%0A%7D%0Adiv%2Efigure%20%7B%0Amax%2Dwidth%3A%2090%25%3B%0A%7D%0Apre%20%7B%0Awidth%3A%2090%25%3B%0Apadding%3A%200%3B%0A%7D%0A%7D%0Aol%20%7B%0A%0Apadding%2Dleft%3A%200%3B%0A%7D%0Aol%3Eli%20%7B%0A%0Aposition%3A%20relative%3B%0A%0Alist%2Dstyle%3A%20none%3B%0Awidth%3A%2090%25%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%2010px%3B%0Apadding%2Dright%3A%200%3B%0Apadding%2Dleft%3A%2090px%3B%0A%7D%0Aol%3Eli%3Abefore%20%7B%0A%0Acontent%3A%20%22Exercise%20%22%20counter%28li%29%22%2E%22%3B%0A%0Acounter%2Dincrement%3A%20li%3B%0Aposition%3A%20absolute%3B%0Acolor%3A%20%236CA0DC%3B%0Aleft%3A%20%2D0%2E5px%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aol%20ol%20%7B%0Acounter%2Dreset%3A%20subitem%3B%0A%7D%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">R Workshop Notes</h1>
+<h4 class="date"><em>2018-04-04</em></h4>
+
+
+
+<p>These are brief notes on data import, tidying, cleaning, exploring and plotting. For much more detail and explanation see Hadley Wickham’s book: <code>R for Data Science</code> (R4DS) at (<a href="http://r4ds.had.co.nz/wrangle-intro.html" class="uri">http://r4ds.had.co.nz/wrangle-intro.html</a>).</p>
+<p>The import and cleaning code is based on a ficitious data (mydata) so the R code won’t run - but the code shows you examples you can modify to suit your datasets and variables.</p>
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<p>Load useful packages</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># all sorts of usefull stuff</span>
+<span class="kw">library</span>(skimr) <span class="co"># for a summary of your data</span>
+<span class="kw">library</span>(knitr) <span class="co"># we might use this for tables</span>
+<span class="kw">library</span>(readxl) <span class="co"># this reads Excel!</span></code></pre></div>
+</div>
+<div id="importing-data" class="section level1">
+<h1>Importing data</h1>
+<div id="from-excel-files" class="section level2">
+<h2>From Excel files</h2>
+<p>Uses use the <code>read_excel()</code> function from the <code>readxl</code> package. It’s installed with the <code>tidyverse</code> but you need to load it before using it with…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)</code></pre></div>
+<p>Then to read a sheet called “my-sheet-name-or-number” from an Excel workbook called “my-excel-file.xls”, skipping the first 5 rows, into an R object called mydata use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="st">&quot;my-excel-file.xls&quot;</span>,
+                 <span class="dt">sheet =</span> <span class="st">&quot;my-sheet-name-or-number&quot;</span>,
+                 <span class="dt">skip =</span> <span class="dv">5</span>)</code></pre></div>
+</div>
+<div id="from-comma-separated-value-files-csv" class="section level2">
+<h2>From comma-separated value files (csv)</h2>
+<p>Use the <code>read_csv()</code> function from the <code>readr</code> package. This is loaded automatically when the <code>tidyverse</code> is loaded.</p>
+<p>To read a csv file called “my-csv-file.csv” which includes a header row into a new R object called mydata use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydat &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;my-csv-file.csv&quot;</span>)</code></pre></div>
+</div>
+</div>
+<div id="tidying-data" class="section level1">
+<h1>Tidying data</h1>
+<div id="filling-down-blanks" class="section level2">
+<h2>Filling down blanks</h2>
+<p>To fill down any blank cells in the <code>patient</code> and <code>breed</code> columns of <code>mydata</code> use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fill</span>(patient, breed)</code></pre></div>
+</div>
+<div id="selecting-or-removing-columns" class="section level2">
+<h2>Selecting or removing columns</h2>
+<p>The <code>select</code> verb lets you choose or remove columns. To remove the name column from mydata use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>name)</code></pre></div>
+<p>To just select <code>subject</code> and all columns between <code>age</code> and <code>glucose</code> in mydata use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(subject, age<span class="op">:</span>glucose)</code></pre></div>
+</div>
+<div id="renaming-columns" class="section level2">
+<h2>Renaming columns</h2>
+<p>To <code>rename</code> the column <code>sex (m/f)</code> to <code>sex</code> use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">sex =</span> <span class="st">`</span><span class="dt">sex (m/f)</span><span class="st">`</span>)</code></pre></div>
+<p>Note that the back ticks `` let you choose columns that have names that would not normally be allowed in R.</p>
+</div>
+<div id="separating-a-columns-into-2-or-more-new-columns" class="section level2">
+<h2>Separating a columns into 2 (or more) new columns</h2>
+<p>A column that contains data that should be in two separate columns can be split using <code>separate()</code>. To split a column called <code>sex_status</code> into two columns, <code>sex</code> and <code>status</code> using <code>_</code> as a separator use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">separate</span>(sex_status,
+           <span class="dt">into =</span> <span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;status&quot;</span>),
+           <span class="dt">sep =</span> <span class="st">&quot;_&quot;</span>)</code></pre></div>
+<p>This would split “male_neutered” in one column into “male” and “neutered” in two separate columns etc.</p>
+</div>
+<div id="creating-and-changing-column-content" class="section level2">
+<h2>Creating and changing column content</h2>
+<p>To make a new column use <code>mutate()</code>. For example if you have a column <code>weight</code> you can add a column log_wt containing <code>log(weight)</code> like this…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">log_wt =</span> <span class="kw">log</span>(weight))</code></pre></div>
+<p>Mutate can also overwrite columns (but be careful). So to convert height in inches to height in cm in the same column you could use…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">height =</span> height <span class="op">*</span><span class="st"> </span><span class="fl">2.54</span>)</code></pre></div>
+</div>
+<div id="gathering-data-in-several-columns" class="section level2">
+<h2>Gathering data in several columns</h2>
+<p>Sometimes data at different times are stored in one column per time. To convert theses into a column for measurement time and a column for the actual data use the <code>gather</code> verb. For example if there were three columns <code>w_1</code>, <code>w_2</code> and <code>w_3</code> all holding weight data at each week these could be converted to a column for week and a column for weight…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydata &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;week&quot;</span>,
+         <span class="dt">value =</span> <span class="st">&quot;weight&quot;</span>,
+         w_<span class="dv">1</span>, w_<span class="dv">2</span>, w_<span class="dv">3</span>)</code></pre></div>
+<p>This can be tricky at first so for more detail see R4DS (<a href="http://r4ds.had.co.nz/tidy-data.html#gathering" class="uri">http://r4ds.had.co.nz/tidy-data.html#gathering</a>)</p>
+</div>
+</div>
+<div id="exploring-and-manipulating-data" class="section level1">
+<h1>Exploring and manipulating data</h1>
+<p>For the following examples we’ll use the <code>mpg</code> dataset that comes with the tidyverse. It describes performance data on some cars. The following code chunks should run (as long as the tidyverse and skimr packages are loaded…)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># all sorts of usefull stuff</span>
+<span class="kw">library</span>(skimr) <span class="co"># for a summary of your data</span></code></pre></div>
+<div id="a-quick-summary" class="section level2">
+<h2>A quick summary</h2>
+<p>Uses the <code>skim()</code> function from the <code>skimr</code> package</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">skim</span>(mpg)</code></pre></div>
+<pre><code>## Skim summary statistics
+##  n obs: 234 
+##  n variables: 11 
+## 
+## Variable type: character 
+##      variable missing complete   n min max empty n_unique
+##         class       0      234 234   3  10     0        7
+##           drv       0      234 234   1   1     0        3
+##            fl       0      234 234   1   1     0        5
+##  manufacturer       0      234 234   4  10     0       15
+##         model       0      234 234   2  22     0       38
+##         trans       0      234 234   8  10     0       10
+## 
+## Variable type: integer 
+##  variable missing complete   n    mean   sd   p0  p25 median  p75 p100
+##       cty       0      234 234   16.86 4.26    9   14   17     19   35
+##       cyl       0      234 234    5.89 1.61    4    4    6      8    8
+##       hwy       0      234 234   23.44 5.95   12   18   24     27   44
+##      year       0      234 234 2003.5  4.51 1999 1999 2003.5 2008 2008
+##      hist
+##  ▅▇▇▇▁▁▁▁
+##  ▇▁▁▇▁▁▁▇
+##  ▃▇▃▇▅▁▁▁
+##  ▇▁▁▁▁▁▁▇
+## 
+## Variable type: numeric 
+##  variable missing complete   n mean   sd  p0 p25 median p75 p100     hist
+##     displ       0      234 234 3.47 1.29 1.6 2.4    3.3 4.6    7 ▇▇▅▅▅▃▂▁</code></pre>
+</div>
+<div id="count-a-text-categorical-column" class="section level2">
+<h2>Count a text / categorical column</h2>
+<p>To count / tally the number of cars of each manufacturer</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(manufacturer)</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer     n
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 audi            18
+##  2 chevrolet       19
+##  3 dodge           37
+##  4 ford            25
+##  5 honda            9
+##  6 hyundai         14
+##  7 jeep             8
+##  8 land rover       4
+##  9 lincoln          3
+## 10 mercury          4
+## 11 nissan          13
+## 12 pontiac          5
+## 13 subaru          14
+## 14 toyota          34
+## 15 volkswagen      27</code></pre>
+</div>
+<div id="do-that-again-but-sort-it" class="section level2">
+<h2>Do that again but sort it</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(manufacturer, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## # A tibble: 15 x 2
+##    manufacturer     n
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 dodge           37
+##  2 toyota          34
+##  3 volkswagen      27
+##  4 ford            25
+##  5 chevrolet       19
+##  6 audi            18
+##  7 hyundai         14
+##  8 subaru          14
+##  9 nissan          13
+## 10 honda            9
+## 11 jeep             8
+## 12 pontiac          5
+## 13 land rover       4
+## 14 mercury          4
+## 15 lincoln          3</code></pre>
+</div>
+<div id="count-a-text-categorical-column-by-another-one" class="section level2">
+<h2>Count a text / categorical column by another one</h2>
+<p>To count drive system by year (drive systems are forward, rear and 4x4)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(drv)</code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+## # Groups:   year [2]
+##    year drv       n
+##   &lt;int&gt; &lt;chr&gt; &lt;int&gt;
+## 1  1999 4        49
+## 2  1999 f        57
+## 3  1999 r        11
+## 4  2008 4        54
+## 5  2008 f        49
+## 6  2008 r        14</code></pre>
+</div>
+<div id="to-calculate-the-mean-and-median-engine-sizes" class="section level2">
+<h2>To calculate the mean and median engine sizes</h2>
+<p>The <code>summarise</code> verb/function reduces a dataframe down to summary columns. The <code>na.rm = TRUE</code> argument in the statistics functions tells them to ignore missing values (NA’s in R).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_displacement =</span> <span class="kw">mean</span>(displ, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
+            <span class="dt">median_displacement =</span> <span class="kw">median</span>(displ, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##   mean_displacement median_displacement
+##               &lt;dbl&gt;               &lt;dbl&gt;
+## 1              3.47                3.30</code></pre>
+<p>We can extend that code to look at engine size by year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_displacement =</span> <span class="kw">mean</span>(displ, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
+            <span class="dt">median_displacement =</span> <span class="kw">median</span>(displ, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>## # A tibble: 2 x 3
+##    year mean_displacement median_displacement
+##   &lt;int&gt;             &lt;dbl&gt;               &lt;dbl&gt;
+## 1  1999              3.28                3.00
+## 2  2008              3.66                3.60</code></pre>
+<p>Engines look to be getting bigger!</p>
+</div>
+<div id="filtering-observations" class="section level2">
+<h2>Filtering observations</h2>
+<p>To remove (or include) observations that meet a certain criteria use filter. For example to select only the observations from mydata where drive is 4x4</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(drv <span class="op">==</span><span class="st"> &quot;4&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 103 x 11
+##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl   
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+##  1 audi         a4 quat…  1.80  1999     4 manual… 4        18    26 p    
+##  2 audi         a4 quat…  1.80  1999     4 auto(l… 4        16    25 p    
+##  3 audi         a4 quat…  2.00  2008     4 manual… 4        20    28 p    
+##  4 audi         a4 quat…  2.00  2008     4 auto(s… 4        19    27 p    
+##  5 audi         a4 quat…  2.80  1999     6 auto(l… 4        15    25 p    
+##  6 audi         a4 quat…  2.80  1999     6 manual… 4        17    25 p    
+##  7 audi         a4 quat…  3.10  2008     6 auto(s… 4        17    25 p    
+##  8 audi         a4 quat…  3.10  2008     6 manual… 4        15    25 p    
+##  9 audi         a6 quat…  2.80  1999     6 auto(l… 4        15    24 p    
+## 10 audi         a6 quat…  3.10  2008     6 auto(s… 4        17    25 p    
+## # ... with 93 more rows, and 1 more variable: class &lt;chr&gt;</code></pre>
+<p>Note that to check if a column equals ‘something’ you use two equals <code>==</code>. You can compare numbers using <code>&gt;</code> and <code>&lt;</code>. To check if a column has values in a list use <code>%in%</code> like this…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(model <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A4&quot;</span>, <span class="st">&quot;civic&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 9 x 11
+##   manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 honda        civic  1.60  1999     4 manu… f        28    33 r     subc…
+## 2 honda        civic  1.60  1999     4 auto… f        24    32 r     subc…
+## 3 honda        civic  1.60  1999     4 manu… f        25    32 r     subc…
+## 4 honda        civic  1.60  1999     4 manu… f        23    29 p     subc…
+## 5 honda        civic  1.60  1999     4 auto… f        24    32 r     subc…
+## 6 honda        civic  1.80  2008     4 manu… f        26    34 r     subc…
+## 7 honda        civic  1.80  2008     4 auto… f        25    36 r     subc…
+## 8 honda        civic  1.80  2008     4 auto… f        24    36 c     subc…
+## 9 honda        civic  2.00  2008     4 manu… f        21    29 p     subc…</code></pre>
+<p>A <code>!</code> in front of the test makes it opposite. The following keeps all the observations where the colour <strong>isn’t</strong> ‘blue’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>model <span class="op">==</span><span class="st"> &quot;a4&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 227 x 11
+##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl   
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+##  1 audi         a4 quat…  1.80  1999     4 manual… 4        18    26 p    
+##  2 audi         a4 quat…  1.80  1999     4 auto(l… 4        16    25 p    
+##  3 audi         a4 quat…  2.00  2008     4 manual… 4        20    28 p    
+##  4 audi         a4 quat…  2.00  2008     4 auto(s… 4        19    27 p    
+##  5 audi         a4 quat…  2.80  1999     6 auto(l… 4        15    25 p    
+##  6 audi         a4 quat…  2.80  1999     6 manual… 4        17    25 p    
+##  7 audi         a4 quat…  3.10  2008     6 auto(s… 4        17    25 p    
+##  8 audi         a4 quat…  3.10  2008     6 manual… 4        15    25 p    
+##  9 audi         a6 quat…  2.80  1999     6 auto(l… 4        15    24 p    
+## 10 audi         a6 quat…  3.10  2008     6 auto(s… 4        17    25 p    
+## # ... with 217 more rows, and 1 more variable: class &lt;chr&gt;</code></pre>
+<p>Missing values in R are coded as <code>NA</code>. There’s a special function, <code>is.na()</code> to test for missing data. So the following keeps all rows where the colour <strong>isn’t</strong> missing</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mpg <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(model))</code></pre></div>
+<pre><code>## # A tibble: 234 x 11
+##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl   
+##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
+##  1 audi         a4        1.80  1999     4 auto(l… f        18    29 p    
+##  2 audi         a4        1.80  1999     4 manual… f        21    29 p    
+##  3 audi         a4        2.00  2008     4 manual… f        20    31 p    
+##  4 audi         a4        2.00  2008     4 auto(a… f        21    30 p    
+##  5 audi         a4        2.80  1999     6 auto(l… f        16    26 p    
+##  6 audi         a4        2.80  1999     6 manual… f        18    26 p    
+##  7 audi         a4        3.10  2008     6 auto(a… f        18    27 p    
+##  8 audi         a4 quat…  1.80  1999     4 manual… 4        18    26 p    
+##  9 audi         a4 quat…  1.80  1999     4 auto(l… 4        16    25 p    
+## 10 audi         a4 quat…  2.00  2008     4 manual… 4        20    28 p    
+## # ... with 224 more rows, and 1 more variable: class &lt;chr&gt;</code></pre>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
