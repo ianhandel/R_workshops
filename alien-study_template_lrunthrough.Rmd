@@ -1,0 +1,218 @@
+---
+title: "Alien Study - Example Analysis"
+author: "Your name here"
+date: "2018-04-04"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    code_folding: show
+---
+  
+## Load the packages we'll need
+
+```{r, warning=FALSE}
+library(tidyverse)
+library(readxl)
+library(skimr)
+library(knitr)
+```
+
+## Import data
+
+Load in data
+
+```{r}
+alien <- read_excel("aliendata_20180331.xlsx",
+                    sheet = 1,
+                    na = "-999")
+```
+
+## Tidy and clean data
+
+Fill down the missing region data (before bad things happen)
+```{r}
+alien <- alien %>% 
+  fill(region)
+```
+
+Remove alien names (it's personal data we don't need!)
+```{r}
+alien <- alien %>% 
+  select(- name)
+```
+
+Rename the complicated columns
+```{r}
+alien <- alien %>% 
+  rename(glucose = "glucose - mg/L",
+         iq = "IQ - ref to human 100 scale!")
+```
+
+
+Add an 'A' to ID
+```{r}
+alien <- alien %>% 
+  mutate(subject = str_c("A", subject))
+```
+
+Separate 'type' into 'sex' and 'colour'
+```{r}
+alien <- alien %>% 
+  separate(type, into = c("sex", "colour"), sep = "_")
+```
+
+Use first letter of 'sex' as some are abbreviated
+```{r}
+alien <- alien %>% 
+  mutate(sex = str_sub(sex, 1, 1))
+```
+
+Make all the colour lower case as some mixed!
+```{r}
+alien <- alien %>% 
+  mutate(colour = str_to_lower(colour))
+```
+
+If age mentions months divide by 12
+```{r}
+alien <- alien %>% 
+  mutate(age = case_when(str_detect(age, "month") ~ parse_number(age) / 12,
+                   TRUE ~ parse_number(age)))
+```
+
+
+Data cleaning and tidying over (hopefully!)
+
+## Explore data
+
+An overall summary (uses skim from the skimr package)
+```{r}
+skim(alien)
+```
+
+How many aliens?
+```{r}
+alien %>% count()
+```
+
+How many aliens from each region?
+```{r}
+alien %>% 
+  count(region)
+```
+How many aliens of each colour in each region?
+```{r}
+alien %>% 
+  count(region, colour)
+```
+And in order of decreasing frequency...
+```{r}
+alien %>% 
+  count(colour, sort = TRUE)
+```
+Most common colour
+```{r}
+alien %>% 
+  count(colour, sort = TRUE) %>% 
+  top_n(1)
+```
+Most common colour in each region
+```{r}
+alien %>%
+  group_by(region) %>% 
+  count(colour, sort = TRUE) %>% 
+  top_n(1)
+```
+
+### Some summary statistics
+
+mean, median and sd
+```{r}
+alien %>% 
+  summarise(mean(glucose), median(glucose), sd(glucose))
+```
+summaries for each colour
+```{r}
+alien %>%
+  group_by(colour) %>% 
+  summarise(mean = mean(glucose),
+            median = median(glucose),
+            sd = sd(glucose)) %>% 
+  kable(digits = 2, caption = "Glucose (mg/L)")
+```
+
+
+## Visualisation
+
+### Scatter plot
+
+```{r, fig.height=2}
+ggplot(alien, aes(x = age, y = weight, colour = sex)) +
+  geom_point()
+```
+
+### Histogram
+
+```{r}
+ggplot(alien, aes(x = glucose)) +
+  geom_histogram(binwidth = 2)
+```
+
+### Box and whisker plot
+
+```{r}
+ggplot(alien, aes(x = region, y = glucose, fill = region)) +
+  geom_boxplot()
+```
+
+### Jittered plot by colour
+
+```{r}
+ggplot(alien, aes(x = colour, y = glucose)) +
+  geom_jitter(width = 0.1)
+```
+
+### Scatter plot with fitted line
+
+```{r, warning=FALSE}
+ggplot(alien, aes(x = age, y = iron)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+### Facetting
+
+```{r, warning=FALSE}
+ggplot(alien, aes(x = age, y = iron)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~ region)
+```
+
+### Facetting and colour
+
+```geom_smooth(method = "lm", se = FALSE)``` fits a straight line with no confidence interval)
+
+```{r, warning=FALSE}
+ggplot(alien, aes(x = age, y = iron, colour = sex)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ region)
+```
+
+
+### Add some labels and titles, make line thinner andpoints hollow
+
+```{r, warning=FALSE}
+ggplot(alien, aes(x = age, y = iron, colour = sex)) +
+  geom_point(shape = 1) +
+  geom_smooth(method = "lm", se = FALSE, size = 0.2) +
+  facet_wrap(~ region) +
+  labs(x = "Age (years)",
+       y = "Blood Iron (ug/ml)",
+       colour = "Sex",
+       title = "Alien Iron vs age by sex and region",
+       subtitle = "Measured by MS")
+```
