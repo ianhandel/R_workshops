@@ -1,0 +1,196 @@
+---
+title: "My alien analysis"
+author: "Ian Handel"
+output: html_document
+---
+
+# Set up RStudio
+1. Make a directory somewhere
+2. In RStudio File > New Project to set it up as a project
+3. On shared machines Session > Set working directory > To Project...
+4. Copy aliendata_20180331.xlsx into the folder
+5. Start a new Rmd file...
+
+# Load packages
+
+```{r}
+
+library(tidyverse)
+library(readxl)
+library(skimr)
+library(knitr)
+
+```
+# Data cleaning 
+
+Import data
+```{r}
+alien <- read_excel("aliendata_20180331.xlsx", sheet = 1, na = "-999")
+```
+
+Fill down blank regions
+```{r}
+alien <- alien %>%
+  fill(region)
+```
+
+Use select to get rid of name column.
+```{r}
+alien <- alien %>%
+  select(-name)
+```
+
+Tidy ID column
+```{r}
+alien <- alien %>%
+  mutate(subject = str_pad(subject, width = 3, side = "left", pad = "0")) %>% 
+  mutate(subject = str_c("A", subject))
+```
+
+Use separate to separate one column to multiple columns
+```{r}
+alien <- alien %>%
+  separate(type, into = c("sex", "colour"), sep = "_")
+```
+
+Simplify complicated names
+```{r}
+alien <- alien %>%
+  rename(glucose = "glucose - mg/L",
+         iq = "IQ - ref to human 100 scale!")
+```
+
+
+Tidy sex column
+```{r}
+alien <- alien %>%
+  mutate(sex = str_sub(sex, start = 1, end = 1))
+```
+
+Tidy colour column
+```{r}
+alien <- alien %>%
+  mutate(colour = str_to_lower(colour))
+```
+
+
+# Data exploration
+
+Quick look
+```{r}
+skim(alien)
+```
+
+Try group_by function 
+```{r}
+alien %>% 
+  group_by(colour, region, sex) %>%
+  count()
+```
+
+Summary statistics
+```{r}
+alien %>%
+  group_by(region) %>%
+  summarise(mean_iron = mean(iron, na.rm = TRUE),
+            sd_iron = sd(iron, na.rm = TRUE)) 
+```
+
+Sort colours in order of popularity
+```{r}
+alien %>%
+  count(colour, sort = TRUE) 
+```
+
+Sort by age
+```{r}
+alien %>%
+  arrange(desc(age))
+```
+
+Filter dataframe by male green older than 8
+```{r}
+alien %>%
+  filter(sex == "m", age > 8, colour == "green")
+```
+
+# Plotting
+
+Scatterplot
+```{r}
+ggplot(data = alien, aes(x = parse_number(age), y = weight, colour=sex)) + 
+  geom_point()
+```
+
+Bar chart
+```{r}
+ggplot(data = alien, aes(x = colour, fill = region)) +
+  geom_bar()
+```
+
+Histogram
+```{r}
+ggplot(data = alien, aes(x = glucose, fill = sex)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~sex, ncol = 1) + labs(title="Glucose by sex")
+```
+
+Glucose Vs Iron
+```{r}
+ggplot(data = alien, aes(x = glucose, y = iron)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE, linetype = "dotted") +
+  facet_wrap(~region) + 
+  theme_bw()
+```
+
+Recreate some plots
+
+Glucose level by health state
+```{r}
+ggplot(alien, aes(x = health, y = glucose)) +
+  geom_boxplot() +
+  labs(x = "Health status",
+       y = "Glucose (mg/L)",
+       title = "Alien blood glucose by health state",
+       subtitle = "March 2060 data")
+  
+```
+
+
+
+
+
+
+
+
+# Stats
+
+T test
+```{r}
+t.test(glucose ~ sex, data = alien)
+```
+
+Chi square
+
+
+Regression
+```{r}
+mod1 <- lm(iron ~ glucose + region, data=alien)
+# model summary
+summary(mod1)
+# model diagnostics
+plot(mod1)
+```
+
+#### HELP
+
+
+
+
+
+
+
+
+
+

@@ -5,7 +5,7 @@ library(writexl)
 library(here)
 library(babynames)
 
-n <- 100
+n <- 200
 n_years <- 100
 colours <- c("red", "green", "orange", "purple")
 colour_prob <- c(1, 4, 2, 6)
@@ -94,16 +94,16 @@ dat <- dat %>%
     rnorm(n(), 5, 2),
     weight = round(weight, 2))
 
-# make some ages in months
-dat <- dat %>%
-  mutate(age = case_when(
-    age < 2 ~ str_c(sample(
-      1:23,
-      n(),
-      replace = TRUE
-    ), " months"),
-    TRUE ~ as.character(round(age))
-  ))
+# # make some ages in months
+# dat <- dat %>%
+#   mutate(age = case_when(
+#     age < 2 ~ str_c(sample(
+#       1:23,
+#       n(),
+#       replace = TRUE
+#     ), " months"),
+#     TRUE ~ as.character(round(age))
+#   ))
 
 # remove temporary columns
 dat <- dat %>%
@@ -113,7 +113,7 @@ dat <- dat %>%
 # make some iron data 'missing'
 dat <- dat %>%
   mutate(iron = case_when(
-    runif(n(), 0, 1) > 0.95 ~ -999,
+    runif(n(), 0, 1) > 0.90 ~ -999,
     TRUE ~ iron
   ))
 
@@ -154,8 +154,8 @@ dat <- dat %>%
   select(region, subject, name, everything())
 
 # write it!
+write_xlsx(dat, here("data", "aliendata_20180331.xlsx"))
 write_xlsx(dat, here("aliendata_20180331.xlsx"))
+write_xlsx(dat, "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180331.xlsx")
 
-fs::file_copy(here("aliendata_20180331.xlsx"),
-              "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180331.xlsx",
-              overwrite = TRUE)
+
