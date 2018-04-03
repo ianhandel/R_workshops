@@ -1,3 +1,17 @@
+First things
+
+After basics then...
+
+create a folder on their drive
+set it as RProject
+set working directory to that project
+change the inline thingy
+put alien data into that folder
+
+
+
+
+
 notes on dlpyr, tidyr and ggplot2 functions
 based on alien data
 
