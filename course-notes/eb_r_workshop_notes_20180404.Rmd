@@ -24,7 +24,6 @@ Load useful packages
 library(tidyverse) # all sorts of usefull stuff
 library(skimr) # for a summary of your data
 library(knitr) # we might use this for tables
-library(readxl) # this reads Excel!
 ```
 
 # Importing data
