@@ -243,7 +243,14 @@ ggplot(alien, aes(x = iq, fill = region)) +
        y = "IQ score",
        fill = "Region")
 ```
-
+```{r}
+ggplot(alien, aes(x = drives)) +
+  geom_bar() +
+  labs(title = "What do they drive?",
+       x = "Model",
+       y = "Count") +
+  coord_flip()
+```
 
 
 
