@@ -5,15 +5,17 @@ output: html_document
 ---
 
 # Set up RStudio
-1. Make a directory somewhere
-2. In RStudio File > New Project to set it up as a project
-3. On shared machines Session > Set working directory > To Project...
-4. Copy aliendata_20180331.xlsx into the folder
-5. Start a new Rmd file...
+See handout...
+
+1. Folder
+2. Copy data
+3. Setup project
+4. Set working directory
+5. Turn off inline RMarkdown
 
 # Load packages
 
-```{r}
+```{r, warn = FALSE}
 
 library(tidyverse)
 library(readxl)
@@ -172,6 +174,10 @@ t.test(glucose ~ sex, data = alien)
 ```
 
 Chi square
+```{r}
+chisq.test(alien$sex, alien$colour == "purple")
+```
+
 
 
 Regression
@@ -197,8 +203,25 @@ ggplot(alien, aes(age, glucose, colour = sex)) +
        colour = "Alien sex",
        title = "Glucose vs age by sex and region",
        subtitle = "April 2018") +
-  theme_
+  theme_minimal()
 ```
+
+
+# Exercise plots
+
+```{r}
+ggplot(alien, aes(x = age, y = iron, colour = sex)) +
+  geom_point(shape = 1) +
+  geom_smooth(method = "lm", se = FALSE, size = 0.2) +
+  facet_wrap(~ colour) +
+  theme_bw() +
+  labs(title = "Iron vs Age by Sex and Colour",
+       x = "Age (years)",
+       y = "Blood iron (mg/L)",
+       colour = "Alien sex")
+```
+
+
 
 
 
