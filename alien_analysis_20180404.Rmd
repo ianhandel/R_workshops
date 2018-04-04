@@ -1,0 +1,101 @@
+---
+title: "Alien analysis"
+author: "Ian Handel"
+date: "04/04/2018"
+output: html_document
+---
+Load libraries. 
+
+```{r}
+#load libraries
+library(tidyverse)
+library(readxl)
+library(skimr)
+library(knitr)
+```
+
+Get data in
+```{r}
+alien <- read_excel("aliendata_20180404.xlsx", sheet = 1, na = "-999")
+```
+
+Fill missing regions
+```{r}
+alien <- alien %>%
+  fill(region)
+```
+
+Remove names
+```{r}
+alien <- alien %>%
+  select(-name)
+```
+
+Separate type column 
+```{r}
+alien <- alien %>%
+  separate(type, into = c("sex", "colour"), sep = "_")
+```
+
+Take the first letter of sex column and correct colour column
+```{r}
+library(stringr)
+alien <- alien %>%
+  mutate(sex = str_sub(sex, start = 1, end = 1)) %>%
+  mutate(colour = str_to_lower(colour))
+```
+
+Rename columns
+```{r}
+alien <- alien %>%
+  rename(glucose = "glucose - mg/L",
+         iq = "IQ - ref to human 100 scale!")
+```
+
+#Data exploration
+Tabulations
+```{r}
+alien %>%
+  count(colour, sex)
+```
+
+Summarise numerical columns
+```{r}
+alien %>%
+  group_by(colour, sex) %>%
+  summarise(mean_glucose = mean(glucose),
+            sd_glucose = sd(glucose))
+```
+
+# Plotting!!!!
+
+Scatterplot
+```{r}
+ggplot(data = alien, aes(x = age, y = weight, colour = sex)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~region)
+```
+
+Boxplot
+```{r}
+ggplot(alien, aes(x= region, y = glucose, colour = sex)) +
+  geom_boxplot() + 
+  geom_jitter(width=0.2, size=0.5) + 
+  theme_bw()
+```
+
+Histogram 
+```{r}
+ggplot(alien, aes(x = glucose, fill = sex)) + 
+  geom_histogram(bins = 50) + 
+  facet_wrap(~sex, ncol = 1)
+```
+
+
+
+
+
+
+
+
