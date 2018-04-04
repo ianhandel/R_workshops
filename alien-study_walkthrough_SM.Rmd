@@ -221,7 +221,36 @@ ggplot(alien, aes(x = age, y = iron, colour = sex)) +
        colour = "Alien sex")
 ```
 
+```{r}
+ggplot(alien, aes(x = region, y = iron, colour = region)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1, shape = 1) +
+  theme_bw() +
+  labs(title = "Iron vs Region",
+       x = "Region",
+       y = "Blood iron (mg/L)",
+       colour = "Region")
+```
 
+
+```{r}
+ggplot(alien, aes(x = iq, fill = region)) +
+  geom_histogram() +
+  theme_bw() +
+  facet_wrap(~ region) +
+  labs(title = "IQ vs Region",
+       x = "Region",
+       y = "IQ score",
+       fill = "Region")
+```
+```{r}
+ggplot(alien, aes(x = drives)) +
+  geom_bar() +
+  labs(title = "What do they drive?",
+       x = "Model",
+       y = "Count") +
+  coord_flip()
+```
 
 
 
