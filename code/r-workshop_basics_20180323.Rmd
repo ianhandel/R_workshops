@@ -62,7 +62,7 @@ round(pi, 4)
 ```
 
 
-### other types of data
+### other types of data and comparisons
 ```{r}
 eyes <- c("blue", "green", "blue", "brown")
 

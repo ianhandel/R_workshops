@@ -180,12 +180,25 @@ mod1 <- lm(iron ~ glucose + region, data=alien)
 # model summary
 summary(mod1)
 # model diagnostics
-plot(mod1)
+# plot(mod1)
 ```
 
 #### HELP
 
 
+# ggplot2 cheat sheet
+
+```{r}
+ggplot(alien, aes(age, glucose, colour = sex)) +
+  geom_point() +
+  facet_wrap(~ region) +
+  labs(x = "Age in years",
+       y = "Blood glucose (mg/ml)",
+       colour = "Alien sex",
+       title = "Glucose vs age by sex and region",
+       subtitle = "April 2018") +
+  theme_
+```
 
 
 

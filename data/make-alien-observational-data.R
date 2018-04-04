@@ -42,6 +42,9 @@ dat <- tibble(
     size = n,
     replace = TRUE
   )),
+  drives = str_to_title(sample(mpg$model,
+                       size = n,
+                       replace = TRUE)),
   growth_rate = rnorm(n, 10, 2),
   assym = rnorm(n, 100, 10)
 )
@@ -94,17 +97,6 @@ dat <- dat %>%
     rnorm(n(), 5, 2),
     weight = round(weight, 2))
 
-# # make some ages in months
-# dat <- dat %>%
-#   mutate(age = case_when(
-#     age < 2 ~ str_c(sample(
-#       1:23,
-#       n(),
-#       replace = TRUE
-#     ), " months"),
-#     TRUE ~ as.character(round(age))
-#   ))
-
 # remove temporary columns
 dat <- dat %>%
   select(-assym, -growth_rate)
@@ -154,8 +146,8 @@ dat <- dat %>%
   select(region, subject, name, everything())
 
 # write it!
-write_xlsx(dat, here("data", "aliendata_20180331.xlsx"))
-write_xlsx(dat, here("aliendata_20180331.xlsx"))
-write_xlsx(dat, "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180331.xlsx")
+write_xlsx(dat, here("data", "aliendata_20180404.xlsx"))
+write_xlsx(dat, here("aliendata_20180404.xlsx"))
+write_xlsx(dat, "~/Dropbox/EB_Intro_R_Workshop/aliendata_20180404.xlsx")
 
 
