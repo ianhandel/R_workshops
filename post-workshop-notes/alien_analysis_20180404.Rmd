@@ -1,7 +1,7 @@
 ---
 title: "Alien analysis & workshop notes"
 author: "Ian Handel"
-date: "06/04/2018"
+date: "11/04/2018"
 output: 
   html_document: 
     code_folding: show
@@ -12,9 +12,9 @@ output:
 ---
 ## Introduction
 
-Here's the tidied up notes from the 'alien-analysis session'. This document was made by 'knitting' an RMarkdown file which loads in the alien data from an Excel workbook (in the same folder), cleans it and then analyses it. The RMarkdown file is very similar to the one you will have made in the workshop. We've added some lines to the header to make a table of contents and to change the colour scheme. There's also more text added to explain whats going on. Finally we've added some further code to demonstrate more features of R including data management, plotting and some basic statistics. When you're reading through these notes you can also look at the ```alien_analysis_20180404.Rmd``` RMarkdown file to see the code that made it.
+Here's the tidied up notes from the 'alien-analysis session'. This document was made by 'knitting' an RMarkdown file which loads in the alien data from an Excel workbook (in the same folder), cleans it and then analyses it. The RMarkdown file is very similar to the one you will have made in the workshop. We've added some lines to the header to make a table of contents and to change the colour scheme. There's also more text added to explain what's going on. Finally we've added some further code to demonstrate more features of R including data management, plotting and some basic statistics. When you're reading through these notes you can also look at the ```alien_analysis_20180404.Rmd``` RMarkdown file to see the code that made it.
 
-We'll include web links to the R for Datasacience book and other sources with more detail where relevant.
+We'll include web links to Hadley Wickham and Garrett Grolemund's excellent R for Data Science book [R4DS](http://r4ds.had.co.nz) and other sources with more detail where relevant.
 
 R code is shown in these notes in boxes with a light grey background. R output is shown in boxes with a white background with '##' at the left hand side of each line.
 
@@ -33,20 +33,20 @@ library(knitr)
 
 ## Get data in
 
-As the data is stored in Excel we use the ```read_excel()``` function from the `readxl` packkage to import it. This function is given the filename, the sheet name or number (```sheet=```) and optionally the codes for missing data (```na=```). Our code reads the first sheet from "alien_analysis_20180404.Rmd" into a new R object called `alien`. Rmemeber that we're not changing the Excel sheet - just reading it into R.
+As the data is stored in Excel we use the ```read_excel()``` function from the `readxl` package to import it. This function is given the filename, the sheet name or number (```sheet=```) and optionally the codes for missing data (```na=```). Our code reads the first sheet from "alien_analysis_20180404.Rmd" into a new R object called `alien`. Remember that we're not changing the Excel sheet - just reading it into R and putting it into an object we're calling `alien`.
 
 ```{r}
 alien <- read_excel("aliendata_20180404.xlsx", sheet = 1, na = "-999")
 ```
 
-Once the data is in R we can look at the top of it by clicking on its name in the "environment" tab/panel (top right part of the RSTudio window) or by typing ```View(alien)``` into the console (note that "it "View"" has a capital "V"). Once we've had a look we can strat cleaning and tidying it ready for analysis.
+Once the data is in R we can look at the top of it by clicking on its name in the "environment" tab/panel (top right part of the RSTudio window) or by typing ```View(alien)``` into the console (note that "View"" has a capital "V"). Once we've had a look we can start cleaning and tidying it ready for analysis.
 
 ## Data tidy and clean
 
 ### Fill missing regions
-First thing to do is to fill down the missing cells in the "region" column. The following R code takes the ```alien``` object, pipes it into the ```fill``` function/verb and fills the "region" column. The result is put back into the ```alien``` object with ```<-```. Remember, this changes the ```alien``` object in R but doesn't alter the spreadsheet. This is important. It means our original data is untouched as always available if we change out minds about our tidying!
+First thing to do is to fill down the missing cells in the "region" column. The following R code takes the ```alien``` object, pipes it into the ```fill``` function/verb and fills the "region" column. The result is put back into the ```alien``` object with ```<-```. Remember, this changes the ```alien``` object in R but doesn't alter the spreadsheet. This is important. It means our original data is untouched and is always available if we change out minds about our tidying!
 
-If you want to look at what the code is doing one step at a time you can run each code chunk in the ```alien_analysis_20180404.Rmd``` file at a tie (using the little green arrow at its right hand side) and keep looking back at the ```alien``` data to see it change.  
+If you want to look at what the code is doing one step at a time you can run each code chunk in the ```alien_analysis_20180404.Rmd``` file at a time (using the little green arrow at its right hand side) and keep looking back at the ```alien``` data to see it change.  
 
 ```{r}
 alien <- alien %>%
@@ -61,6 +61,9 @@ Next we'll remove the alien names - it's personal data that we don't need and wo
 alien <- alien %>%
   select(-name)
 ```
+
+### Improve the subject iD format
+Teh subject ID is currebtly a number. Wwe prefer ID's to be formatted so thay are unambiguously an 'ID' and to be the same number of charcters long. We use a new verb/function here `mutate`. You pipe a data frame into mutate and give it the name of the column you want to create then `=` and then an expression (recispe) for the column. If you create an existing column it effectively overwirites it. So first off we overwrite subject using the str_pad function (this function is in the "stringr")
 
 Tidy ID column
 ```{r}
